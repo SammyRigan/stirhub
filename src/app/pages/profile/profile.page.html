@@ -1,0 +1,228 @@
+<ion-content class="core">
+  <app-header [profile]="userProfile"></app-header>
+
+  <div class="noner" [hidden]="!isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+  <div class="main" *ngIf="!isLoading">
+    <div class="lt">
+      <div class="pro pal">
+        <div class="banner" [ngStyle]="{'background-image': 'url(' + profile?.bannerUrl + ')'}">
+          <app-go-back></app-go-back>
+          <ion-button (click)="editProfile()" *ngIf="userProfile?._id === profile?._id">edit profile</ion-button>
+          <div class="ind" *ngIf="!userProfile?.name && !profile?.name && (userProfile?._id !== profile?._id)">
+            <ion-button (click)="follow()" *ngIf="!userProfile?.following.includes(profile?._id)">follow</ion-button>
+            <ion-button (click)="unfollow()" *ngIf="userProfile?.following.includes(profile?._id)">unfollow</ion-button>
+          </div>
+          <div class="ind" *ngIf="(userProfile?._id !== profile?._id) && !userProfile?.name && profile?.name">
+            <ion-button (click)="like()" *ngIf="!userProfile?.liked.includes(profile?._id)">like</ion-button>
+            <ion-button (click)="unlike()" *ngIf="userProfile?.liked.includes(profile?._id)">unlike</ion-button>
+          </div>
+          <div class="ind" *ngIf="(userProfile?._id !== profile?._id) && userProfile?.name && !profile?.name">
+            <ion-button (click)="observe()" *ngIf="!userProfile?.observing.includes(profile?._id)">observe</ion-button>
+            <ion-button (click)="unobserve()" *ngIf="userProfile?.observing.includes(profile?._id)">disregard</ion-button>
+          </div>
+          <div class="ind" *ngIf="userProfile?.name && profile?.name && (userProfile?._id !== profile?._id)">
+            <ion-button (click)="ifollow()" *ngIf="!userProfile?.following.includes(profile?._id)">follow</ion-button>
+            <ion-button (click)="iunfollow()" *ngIf="userProfile?.following.includes(profile?._id)">unfollow</ion-button>
+          </div>
+
+          <ion-avatar><ion-img [hidden]="!profile?.profileImgUrl" [src]="profile?.profileImgUrl"></ion-img></ion-avatar>
+        </div>
+        <div class="personal">
+          <span class="pan">
+            <div class="peh-so">
+              <h4>{{ profile?.name ? profile?.name : (profile?.firstname + ' ' + profile?.lastname) }}</h4>
+              <p>{{ profile?.knownFor }}</p>
+            </div>
+            <span class="soc">
+              <a [href]="profile?.twitter" target="_blank" [ngClass]="{'inact': !profile?.twitter}"><ion-icon name="logo-twitter"></ion-icon></a>
+              <a [href]="profile?.facebook" target="_blank" [ngClass]="{'inact': !profile?.facebook}"><ion-icon name="logo-facebook"></ion-icon></a>
+              <a [href]="profile?.linkedin" target="_blank" [ngClass]="{'inact': !profile?.linkedin}"><ion-icon name="logo-linkedin"></ion-icon></a>
+              <a [href]="profile?.instagram" target="_blank" [ngClass]="{'inact': !profile?.instagram}"><ion-icon name="logo-instagram"></ion-icon></a>
+            </span>
+          </span>
+          <div class="ff">
+            <span *ngIf="!profile?.name">
+              <small (click)="viewClout(profile?.following, 'user-profiles', 'following')">{{ profile?.following.length }} following</small>
+              <small (click)="viewClout(profile?.followers, 'user-profiles', 'followers')">{{ profile?.followers.length }} followers</small>
+              <small (click)="viewClout(profile?.liked, 'institutions', 'liked institutions')">{{ profile?.liked.length }} {{ profile?.liked.length === 1 ? 'institution' : 'institutions' }} liked</small>
+            </span>
+            <span *ngIf="profile?.name">
+              <small (click)="viewClout(profile?.following, 'institutions', 'following')">{{ profile?.following.length }} following</small>
+              <small (click)="viewClout(profile?.followers, 'institutions', 'followers')">{{ profile?.followers.length }} followers</small>
+              <small (click)="viewClout(profile?.observing, 'user-profiles', 'observing')">{{ profile?.observing.length }} observing</small>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="rabat">
+        <div class="rblt">
+          <div class="abt pal">
+            <h4>About</h4>
+            <small>{{ profile?.briefBio }}</small>
+
+            <div class="ab-stat">
+              <span>
+                <ion-icon name="location"></ion-icon>
+                <small>Ghana</small>
+              </span>
+              <span>
+                <ion-icon name="calendar"></ion-icon>
+                <small>Joined {{ profile?.date | date:'MMM YYYY' }}</small>
+              </span>
+              <span [hidden]="profile?.name || !profile?.studyField">
+                <ion-icon name="book"></ion-icon>
+                <small>{{ profile?.studyField }}</small>
+              </span>
+              <span [hidden]="!profile?.name">
+                <ion-icon name="earth"></ion-icon>
+                <small>{{ profile?.website ? profile.website : 'n/a' }}</small>
+              </span>
+              <span [hidden]="!profile?.telephone">
+                <ion-icon name="call"></ion-icon>
+                <small>{{ profile?.telephone }}</small>
+              </span>
+            </div>
+          </div>
+          <app-interests-block [profile]="profile" [add]="profile?._id === userProfile?._id ? true : false"></app-interests-block>
+          <app-community-block></app-community-block>
+        </div>
+        <div class="rrbt">
+          <div class="taby pal">
+            <ion-button fill="clear" [ngClass]="{'act': view === 'overview'}" (click)="view = 'overview'">overview</ion-button>
+            <ion-button fill="clear" [ngClass]="{'act': view === 'research'}" (click)="view = 'research'">research</ion-button>
+            <!-- <ion-button fill="clear" [ngClass]="{'act': view === 'publications'}" (click)="view = 'publications'">publications</ion-button> -->
+            <ion-button fill="clear" [ngClass]="{'act': view === 'posts'}" (click)="view = 'posts'; getPosts()">posts</ion-button>
+            <ion-button fill="clear" [ngClass]="{'act': view === 'comments'}" (click)="view = 'comments'; getComments()">comments</ion-button>
+          </div>
+          <div class="ed-on" [hidden]="view !== 'overview'">
+            <div class="emp bend pal" [hidden]="profile?.name">
+              <div class="hdd">
+                <h2>experience</h2>
+                <ion-button class="ed" (click)="experience(null)" *ngIf="userProfile?._id === profile?._id">
+                  <ion-icon name="add"></ion-icon>
+                </ion-button>
+              </div>
+              <small *ngIf="profile?.workHistory?.length === 0">No experiences added yet</small>
+              <div class="ed-item" *ngFor="let ex of profile?.workHistory">
+                <span class="ed-img" [ngStyle]="{'background-image': 'url(assets/img/ex.png)'}"></span>
+                <div class="ed-t">
+                  <h4>{{ ex.title }}</h4>
+                  <p>{{ ex.company }}</p>
+                  <small *ngIf="ex.startDate && (ex.endDate || ex.current)">{{ (ex.startDate | date:'y') + ' - ' + (ex.current ? 'present' : ex.endDate | date:'y')}}</small>
+                </div>
+                <ion-icon name="pencil" (click)="experience(ex)" *ngIf="userProfile?._id === profile?._id"></ion-icon>
+              </div>
+            </div>
+            <div class="edu bend pal" [hidden]="profile?.name">
+              <div class="hdd">
+                <h2>education</h2>
+                <ion-button class="ed" (click)="education(null)" *ngIf="userProfile?._id === profile?._id">
+                  <ion-icon name="add"></ion-icon>
+                </ion-button>
+              </div>
+              <small *ngIf="profile?.educationHistory?.length === 0">No schools added yet</small>
+              <div class="ed-item" *ngFor="let ed of profile?.educationHistory">
+                <span class="ed-img" [ngStyle]="{'background-image': 'url(assets/img/em.png)'}"></span>
+                <div class="ed-t">
+                  <h4>{{ ed.school }}</h4>
+                  <p>{{ ed.degree }}</p>
+                  <small *ngIf="ed.startDate && (ed.endDate || ed.current)">{{ (ed.startDate | date:'y') + ' - ' + (ed.current ? 'present' : ed.endDate | date:'y')}}</small>
+                </div>
+                <ion-icon name="pencil" (click)="education(ed)" *ngIf="userProfile?._id === profile?._id"></ion-icon>
+              </div>
+            </div>
+            <div class="edu bend pal" [hidden]="!profile?.name">
+              <div class="hdd">
+                <h2>events</h2>
+                <ion-button class="ed" (click)="addEvent()" *ngIf="userProfile?._id === profile?._id">
+                  <ion-icon name="add"></ion-icon>
+                </ion-button>
+              </div>
+              <small [hidden]="iEvents.length > 0">No events added yet</small>
+              <div class="ev-i" *ngFor="let event of iEvents">
+                  <span class="img">
+                    <span class="i-w">
+                      <h2>{{ event.startDate | date:'dd' }}</h2>
+                      <small>{{ event.startDate | date:'MMM' }}</small>
+                    </span>
+                  </span>
+                  <span class="txt">
+                    <p>{{ event.title }}</p>
+                    <small>{{ event.description }}</small>
+                    <div class="ev-act">
+                      <small *ngIf="event.physicalDetails.name"><ion-icon name="pin"></ion-icon><a [href]="event.physicalDetails.mapLink" target="_blank">{{ event.physicalDetails.name }}</a></small>
+                      <small *ngIf="event.virtualDetails.platform"><ion-icon name="earth"></ion-icon><a [href]="event.virtualDetails.link" target="_blank">{{ event.virtualDetails.platform }}</a></small>
+                      <small *ngIf="(event.startDate | date:'dd, MMM') === (event.endDate | date:'dd, MMM')"><ion-icon name="time"></ion-icon>{{ event.startDate | date:'h:mm a z' }} to {{ event.endDate | date:'h:mm a z' }}</small>
+                      <small *ngIf="(event.startDate | date:'dd, MMM') !== (event.endDate | date:'dd, MMM')"><ion-icon name="time"></ion-icon>{{ event.startDate | date:'MMMM d, y' }} to {{ event.endDate | date:'MMMM d, y' }}</small>
+                    </div>
+                  </span>
+              </div>
+            </div>
+            <div class="edu bend pal anr" [hidden]="!profile?.name">
+              <div class="hdd">
+                <h2>announcements</h2>
+                <ion-button class="ed" (click)="makeAnnouncement()" *ngIf="userProfile?._id === profile?._id">
+                  <ion-icon name="add"></ion-icon>
+                </ion-button>
+              </div>
+              <small [hidden]="announcements.length > 0">No announcements made yet</small>
+              <app-post-card [timePost]="ann" [profile]="profile" *ngFor="let ann of announcements"></app-post-card>
+
+            </div>
+          </div>
+          <div class="ta-w" [hidden]="view !== 'posts'">
+            <app-post-card [timePost]="post" [profile]="profile" *ngFor="let post of timePosts"></app-post-card>
+          </div>
+          <div class="ta-w" [hidden]="view !== 'comments'">
+            <app-post-card [timePost]="post" [profile]="profile" *ngFor="let post of comments"></app-post-card>
+          </div>
+          <div class="ta-ep" [hidden]="view !== 'publications'">
+            <div class="pub-c pal" *ngFor="let pub of publications" [routerLink]="['/single-publication/' + pub.id]">
+              <div class="p-img" [ngStyle]="{'background-image': 'url(' + pub.imageUrl + ')'}"></div>
+              <div class="p-txt">
+                <h4>{{ pub.title }}</h4>
+                <small>{{ pub.brief.slice(0, 300) }}</small>
+                <div class="ans">
+                  <span><ion-icon name="calendar-outline"></ion-icon> {{pub.date | date:'mediumDate'}}</span>
+                  <span *ngIf="pub.fileUrl"><ion-icon name="arrow-down-outline"></ion-icon> File attached</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ta-ep" [hidden]="view !== 'research'">
+            <div class="non">
+              <ion-img src="assets/img/street.png"></ion-img>
+              <small [hidden]="userProfile?._id !== profile?._id">You have no researches yet. Click to add your first</small>
+              <ion-button class="nopads" (click)="createResearch()" [hidden]="userProfile?._id !== profile?._id"><ion-icon name="add"></ion-icon></ion-button>
+            </div>
+            <div class="pub-c pal" *ngFor="let pub of researches" [routerLink]="['/single-research/' + pub._id]">
+              <div class="p-img" [ngStyle]="{'background-image': 'url(' + pub.imageUrl + ')'}"></div>
+              <div class="p-txt">
+                <h4>{{ pub.title }}</h4>
+                <small>{{ pub.brief.slice(0, 300) }}</small>
+                <div class="ans">
+                  <span><ion-icon name="calendar-outline"></ion-icon> {{pub.date | date:'mediumDate'}}</span>
+                  <span *ngIf="pub.fileUrl"><ion-icon name="arrow-down-outline"></ion-icon> File attached</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    <div class="rt">
+      <app-invitations-block [hidden]="profile?._id !== userProfile?._id" [profile]="userProfile"></app-invitations-block>
+      <app-suggestion-widget [profile]="userProfile"></app-suggestion-widget>
+      <!-- <ion-button class="ptw" (click)="makePost()">make post</ion-button> -->
+    </div>
+  </div>
+
+</ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="makePost()">
+    <ion-icon name="pencil-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

@@ -1,0 +1,62 @@
+<div class="item" [routerLink]="['/single-post/' + timePost.id]">
+  <div class="use">
+    <div class="pen">
+      <ion-avatar (click)="$event.stopPropagation()" [routerLink]="['/profile/' + (commentorProfile?.name ? 'institution/' : 'individual/') + commentorProfile?._id]" routerLinkActive="router-link-active" ><ion-img [src]="commentorProfile?.profileImgUrl ? commentorProfile.profileImgUrl : 'assets/img/man.png'" [hidden]="!commentorProfile?.profileImgUrl"></ion-img></ion-avatar>
+      <div class="txt">
+        <h4 [hidden]="!commentorProfile">{{ commentorProfile?.name ? commentorProfile?.name : commentorProfile?.firstname + ' ' + commentorProfile?.lastname }} <i>{{ timePost.date | dateFrom:timePost.date }}</i></h4>
+        <h4 [hidden]="commentorProfile" class="non"></h4>
+        <small>{{ commentorProfile?.knownFor }}</small>
+      </div>
+    </div>
+    <div class="p-more" ngbDropdown (click)="$event.stopPropagation()">
+      <ion-icon name="ellipsis-horizontal" id="dropdownBasic1" ngbDropdownToggle></ion-icon>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId && !profile?.following?.includes(timePost?.profileId) && (!this.profile?.name && !this.commentorProfile?.name || this.profile?.name && this.commentorProfile?.name)" (click)="follow()">Follow</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId && profile?.following?.includes(timePost?.profileId) && (!this.profile?.name && !this.commentorProfile?.name || this.profile?.name && this.commentorProfile?.name)" (click)="unfollow()">Unfollow</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId && !profile?.liked?.includes(timePost?.profileId) && (!this.profile?.name && this.commentorProfile?.name)" (click)="instlike(true)">Like</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId && profile?.liked?.includes(timePost?.profileId) && (!this.profile?.name && this.commentorProfile?.name)" (click)="instlike(false)">Unlike</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId && !profile?.observing?.includes(timePost?.profileId) && (this.profile?.name && !this.commentorProfile?.name)" (click)="observe(true)">Observe</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId && (this.profile?.name && !this.commentorProfile?.name) && profile?.observing?.includes(timePost?.profileId)" (click)="observe(false)">Disregard</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId" [routerLink]="['/profile/' + (timePost?.institution ? 'institution/' : 'individual/') + timePost?.profileId]" routerLinkActive="router-link-active" >View Profile</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId" (click)="reportPost()">Report Post</button>
+        <button ngbDropdownItem *ngIf="profile?._id === timePost?.profileId" (click)="deletePost()">Delete</button>
+      </div>
+    </div>
+  </div>
+  <div class="ctn">
+    <p>{{ timePost.text }}</p>
+    <div class="im-w" [ngClass]="{'mo': timePost.imgUrls.length > 1}" *ngIf="timePost.imgUrls.length === 1" (click)="$event.stopPropagation()">
+      <div class="d-w" *ngFor="let img of timePost.imgUrls" (click)="viewMedia(timePost.imgUrls.indexOf(img))">
+        <ion-img [src]="img"></ion-img>
+      </div>
+    </div>
+    <div class="im-w mo" [ngClass]="{'ko': timePost.imgUrls.length === 3}" [hidden]="timePost.imgUrls.length === 0" *ngIf="timePost.imgUrls.length > 1" (click)="$event.stopPropagation()">
+      <div class="d-w" *ngFor="let img of timePost.imgUrls" [ngStyle]="{'background-image': 'url(' + img + ')'}" (click)="viewMedia(timePost.imgUrls.indexOf(img))">
+        <!-- <img [src]="img"> -->
+      </div>
+    </div>
+    <div class="im-w" [hidden]="!timePost.videoUrl" (click)="$event.stopPropagation()">
+      <video controls playsinline *ngIf="timePost.videoUrl" #postVideo>
+        <source [src]="timePost.videoUrl" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+  <div class="actions">
+    <span [ngClass]="{'act': isLiked}" (click)="like(); $event.stopPropagation()">
+      <ion-icon name="heart"></ion-icon>
+      <small>{{ timePost.likes }}</small>
+    </span>
+    <span (click)="comment(); $event.stopPropagation()">
+      <ion-icon name="chatbox-ellipses"></ion-icon>
+      <small>{{ timePost.comments }}</small>
+    </span>
+    <span (click)="copyLink(); $event.stopPropagation()">
+      <ion-icon name="arrow-redo"></ion-icon>
+      <!-- <small>share</small> -->
+    </span>
+  </div>
+  <div class="comments" *ngIf="timePost.comments > 0 && !cap">
+    <app-comment-card *ngFor="let comment of comments | slice:0:1" [timePost]="comment" [postOwner]="postOwner" [doc]="doc" [profile]="profile" [cap]="true" (click)="$event.stopPropagation()"></app-comment-card>
+  </div>
+</div>

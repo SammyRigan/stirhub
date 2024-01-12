@@ -1,0 +1,32 @@
+<div class="wrap">
+  <div class="topp">
+    <div class="po">
+      <ion-icon name="arrow-back" (click)="drop()"></ion-icon>
+      <h4>{{ receiver.adminId ? receiver.name : (receiver.firstname + ' ' + receiver.lastname) }}</h4>
+    </div>
+    <div class="ics">
+      <!-- <ion-icon name="create-outline" (click)="contacts()"></ion-icon> -->
+      <ion-icon [name]="show ? 'chevron-down-outline' : 'chevron-up-outline'" (click)="hide();"></ion-icon>
+    </div>
+  </div>
+  <div class="chats" id="chats">
+    <div class="mess" *ngFor="let mess of messages" [ngClass]="{'mine': mess.senderId !== receiver.id}">
+      <ion-avatar><ion-img [hidden]="!receiver.imgUrl" [src]="receiver.imgUrl"></ion-img></ion-avatar>
+      <div class="desc">
+        <div class="d-m">
+          <p>{{ mess.text }}</p>
+        </div>
+        <small>{{ mess.date | date:'medium' }}</small>
+      </div>
+    </div>
+  </div>
+  <a href="#bottom" id="bottom"></a>
+  <div class="chatter">
+    <ion-textarea placeholder="Start a new message..." [(ngModel)]="message.text"></ion-textarea>
+    <div class="sub">
+      <ion-icon name="image-outline"></ion-icon>
+      <ion-icon name="attach-outline"></ion-icon>
+      <ion-button (click)="sendMessage()" [disabled]="!message.text && !video && images.length === 0">send</ion-button>
+    </div>
+  </div>
+</div>

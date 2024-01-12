@@ -1,0 +1,91 @@
+ion-content {
+  --background: #ecf0f560;
+}
+
+.heady {
+  display: flex;
+  align-items: center;
+  padding: 20px 30px;
+  background-color: #ffffff;
+  box-shadow: 0 3px 15px #00000005;
+
+  ion-icon {
+    margin-right: 20px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  h4 {
+    text-transform: capitalize;
+  }
+}
+
+.in-wrap {
+  border: solid 1px #00000020;
+  border-radius: 7px;
+  margin-bottom: 20px;
+  padding: 10px;
+
+  p {
+    text-transform: capitalize;
+    font-size: 11px;
+    opacity: .6;
+  }
+
+  ion-input {
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+    position: relative;
+
+    ion-icon {
+      margin-right: 10px;
+      right: 0;
+      position: absolute;
+    }
+  }
+
+  ion-input.ic {
+    --padding-end: 40px;
+  }
+
+  ion-textarea {
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+    min-height: 70px;
+    // height: auto;
+  }
+
+  &::ng-deep textarea {
+    min-height: 70px;
+  }
+}
+
+.spanner {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  ion-icon {
+    margin-right: 10px;
+    color: #0C7C3F;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
+ion-button {
+  height: 50px;
+  margin: 0;
+  // margin-top: 30px;
+  flex: 1;
+}
+
+.foot {
+  display: flex;
+}

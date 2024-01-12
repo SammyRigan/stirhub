@@ -1,0 +1,71 @@
+<div class="d-head">
+  <div class="logo" [routerLink]="['/timeline']" >
+    <ion-img src="assets/img/stirs-logo.png"></ion-img>
+    <ion-img src="assets/img/stirs-logo-g.png"></ion-img>
+  </div>
+  <div class="search" [routerLink]="['/search']">
+    <ion-input name="search" placeholder="Discover"><ion-icon name="search"></ion-icon></ion-input>
+  </div>
+  <div class="links">
+    <div class="li" [routerLink]="['/timeline']" [ngClass]="{'act': active === 'timeline'}">
+      <ion-icon name="grid"></ion-icon>
+      <p>Home</p>
+      <span></span>
+    </div>
+    <div class="li" [routerLink]="['/messages']" [ngClass]="{'act': active === 'messages'}">
+      <ion-icon name="chatbubble-ellipses"></ion-icon>
+      <p>Messages</p>
+      <span></span>
+    </div>
+    <div class="li" [routerLink]="['/events-hub']" [ngClass]="{'act': active === 'events-hub'}">
+      <ion-icon name="calendar"></ion-icon>
+      <p>Events Hub</p>
+      <span></span>
+    </div>
+    <div class="li" [routerLink]="['/notice-board']" [ngClass]="{'act': active === 'notice-board'}">
+      <ion-icon name="megaphone"></ion-icon>
+      <p>Notice Board</p>
+      <span></span>
+    </div>
+    <div class="li" [routerLink]="['/search']" [ngClass]="{'act': active === 'search'}">
+      <ion-icon name="filter-circle"></ion-icon>
+      <p>Discover</p>
+      <span></span>
+    </div>
+    <!-- <div class="li">
+      <ion-icon name="notifications"></ion-icon>
+      <span></span>
+    </div>
+    <div class="li">
+      <ion-icon name="heart"></ion-icon>
+      <span></span>
+    </div> -->
+  </div>
+  <div class="profile" ngbDropdown>
+    <div class="pro-wrap" id="dropdownBasic1" ngbDropdownToggle>
+      <ion-avatar><ion-img [src]="profile?.profileImgUrl ? profile?.profileImgUrl : ''"></ion-img></ion-avatar>
+      <span class="nm">
+        <h4>{{ profile?.iType === 'institution' ? profile?.name : (profile?.firstname + ' ' + profile?.lastname) }}</h4>
+        <ion-icon name="chevron-down"></ion-icon>
+      </span>
+    </div>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="ope">
+      <button ngbDropdownItem [routerLink]="['/profile/' + profile?.iType + '/' + profile?._id ]">Profile</button>
+      <button ngbDropdownItem (click)="invite()">Invite someone <span><small>{{ profile?.invites }}</small></span></button>
+      <button ngbDropdownItem (click)="logout()">Logout</button>
+    </div>
+  </div>
+  <div class="m-more">
+    <ion-icon name="search"></ion-icon>
+    <!-- <ion-icon name="menu"></ion-icon> -->
+    <ion-menu-toggle>
+      <div class="m-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </ion-menu-toggle>
+  </div>
+</div>
+
+<!-- <div class="m-menu"></div> -->

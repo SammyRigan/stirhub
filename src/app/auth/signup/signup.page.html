@@ -1,0 +1,88 @@
+<ion-content>
+  <div class="wrap">
+    <div class="rt" >
+      <ion-img class="stir fi" src="assets/img/stir-2.png"></ion-img>
+      <ion-img class="stir se" src="assets/img/stir.png"></ion-img>
+      <!-- <ion-img class="bx-img" src="assets/img/robo.png"></ion-img> -->
+      <!-- <div class="bx-box" style="background-image: url('assets/img/robo-hand.webp');"></div> -->
+      <div class="bx-box">
+        <div class="pot"></div>
+        <div class="pot"></div>
+        <div class="pot"></div>
+        <ion-img src="assets/img/contacts_no-bg.gif"></ion-img>
+      </div>
+    </div>
+    <div class="lt">
+      <div class="lt-wrap">
+        <!-- <small class="alt">Do not have an account? <i>Create one</i></small> -->
+        <div class="main">
+          <ion-img src="assets/img/stirs-logo-g.png"></ion-img>
+          <div class="m-head">
+            <h4>Sign Up</h4>
+            <small>You are almost in. Just a few questions to help set up your account.</small>
+          </div>
+
+          <div class="f-wrap">
+            <div class="in-wrap">
+              <small>What would you say you are?</small>
+              <ion-select [(ngModel)]="profile.iType" placeholder="Select one">
+                <ion-select-option value="individual">Individual</ion-select-option>
+                <ion-select-option value="institution">Entity</ion-select-option>
+              </ion-select>
+              <!-- <ion-icon name="person"></ion-icon> -->
+            </div>
+            <div class="in-wrap" [hidden]="!profile.iType">
+              <small>What best describes you?</small>
+              <ion-select [(ngModel)]="profile.knownFor" placeholder="Select one">
+                <ion-select-option value="industry" *ngIf="profile.iType === 'institution'">Business</ion-select-option>
+                <ion-select-option value="academia" *ngIf="profile.iType === 'institution'">Academia</ion-select-option>
+                <ion-select-option value="research institution" *ngIf="profile.iType === 'institution'">Research Institution</ion-select-option>
+                <ion-select-option value="development partner" *ngIf="profile.iType === 'institution'">Development Partner</ion-select-option>
+                <ion-select-option value="practitioner" *ngIf="profile.iType === 'individual'">Practitioner</ion-select-option>
+                <ion-select-option value="student" *ngIf="profile.iType === 'individual'">Student</ion-select-option>
+                <ion-select-option value="incubator" *ngIf="profile.iType === 'institution'">Incubator</ion-select-option>
+              </ion-select>
+              <!-- <ion-icon name="person"></ion-icon> -->
+            </div>
+            <div class="in-wrap" [hidden]="profile.iType !== 'institution' || !profile.knownFor">
+              <small>Name</small>
+              <ion-input type="text" placeholder="Name of Entity" name="ename" [(ngModel)]="profile.name"></ion-input>
+              <ion-icon name="business"></ion-icon>
+            </div>
+            <div class="in-wrap" [hidden]="profile.iType !== 'individual' || !profile.knownFor">
+              <small>Firstname</small>
+              <ion-input type="text" placeholder="Kwame" name="firstname" [(ngModel)]="profile.firstname"></ion-input>
+              <ion-icon name="person"></ion-icon>
+            </div>
+            <div class="in-wrap" [hidden]="profile.iType !== 'individual' || !profile.knownFor">
+              <small>Lastname</small>
+              <ion-input type="text" placeholder="Adom" name="lastname" [(ngModel)]="profile.lastname"></ion-input>
+              <ion-icon name="person"></ion-icon>
+            </div>
+            <div class="in-wrap" [hidden]="!profile.knownFor">
+              <small>Username</small>
+              <ion-input type="text" placeholder="Adom777" name="uname" [(ngModel)]="profile.username"></ion-input>
+              <ion-icon name="person"></ion-icon>
+            </div>
+            <div class="in-wrap" [hidden]="!profile.iType || !profile.knownFor">
+              <small>Password</small>
+              <ion-input [type]="passType" placeholder="******" name="password" [(ngModel)]="password"></ion-input>
+              <ion-icon name="lock-closed" (click)="passType === 'password' ? passType = 'text' : passType = 'password'"></ion-icon>
+            </div>
+            <ion-button (click)="signup()">Sign Up</ion-button>
+
+            <!-- <div class="br"></div> -->
+
+            <span class="fgt">
+              <small [routerLink]="['/auth']">Back to login</small>
+              <span>
+                <ion-icon name="headset"></ion-icon>
+                <small>Contact support</small>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

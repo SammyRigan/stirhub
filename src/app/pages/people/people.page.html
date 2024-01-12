@@ -1,0 +1,33 @@
+<ion-content class="core">
+  <app-header [profile]="profile"></app-header>
+
+  <div class="noner" [hidden]="!isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div class="main" *ngIf="!isLoading">
+    <div class="lt">
+      <div class="very">
+        <div class="p-tile pal" *ngFor="let person of people">
+          <div class="person">
+            <ion-avatar><ion-img [src]="person.profileImgUrl" [hidden]="!person.profileImgUrl"></ion-img></ion-avatar>
+            <span>
+              <h4>{{ person.firstname + ' ' + person.lastname }}</h4>
+              <small>{{ person.iType }}</small>
+            </span>
+          </div>
+          <p>{{ person.briefBio ? (person.briefBio.length > 115 ? person.briefBio.substr(0, 113) + '...' : person.briefBio) : 'Not available' }}</p>
+          <span class="fod">
+            <ion-icon name="book-outline"></ion-icon>
+            <small>{{ person.studyField ? person.studyField : 'Not available' }}</small>
+          </span>
+          <ion-button fill="outline" [routerLink]="['/profile/user-profile/' + person?._id]">view profile</ion-button>
+        </div>
+      </div>
+    </div>
+    <div class="rt">
+      <app-suggestion-widget [profile]="profile"></app-suggestion-widget>
+      <ion-button class="ptw" (click)="makePost()">make post</ion-button>
+    </div>
+  </div>
+</ion-content>

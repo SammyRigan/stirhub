@@ -1,0 +1,22 @@
+.wrap {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+ion-avatar {
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
+  background-color: #eee;
+}
+
+h4 {
+  font-size: 15px;
+}
+
+small {
+  font-size: 12px;
+  color: #00000050;
+}

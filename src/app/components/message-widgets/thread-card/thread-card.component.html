@@ -1,0 +1,8 @@
+<div class="wrap" (click)="viewThread()">
+  <ion-avatar><ion-img [src]="receiver?.profileImgUrl" [hidden]="!receiver?.profileImgUrl"></ion-img></ion-avatar>
+  <div class="desc">
+    <h4>{{ receiver?.adminId ? receiver?.name : (receiver?.firstname + ' ' + receiver?.lastname) }}</h4>
+    <p [hidden]="!thread.lastMessage.message">{{ thread.lastMessage.message }}</p>
+    <p style="font-style: italic; display: flex; align-items: center;" [hidden]="thread.lastMessage.message"><ion-icon style="margin-right: 5px;" [name]="thread.lastMessage.image ? 'image-outline' : 'attach-outline'"></ion-icon>{{ thread.lastMessage.image ? 'Image attached' : thread.lastMessage.file ? 'File attached' : '' }}</p>
+  </div>
+</div>

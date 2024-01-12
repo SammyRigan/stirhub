@@ -1,0 +1,15 @@
+<ion-content>
+  <div class="wrap">
+    <ion-icon class="close" name="close" (click)="close()"></ion-icon>
+    <div class="con-wr">
+      <ion-img src="assets/img/send.png"></ion-img>
+      <h4>Invite Someone</h4>
+      <small>Type their email here. We'll get in touch with them and bring them onboard</small>
+      <div class="in-wrap">
+        <ion-input name="email" type="email" placeholder="Email Address" [(ngModel)]="email" (ionChange)="removeSpace()"></ion-input>
+        <ion-icon name="at-outline"></ion-icon>
+      </div>
+      <ion-button (click)="sendInvite()">send invitation</ion-button>
+    </div>
+  </div>
+</ion-content>

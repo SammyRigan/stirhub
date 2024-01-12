@@ -1,0 +1,27 @@
+<div class="wrap">
+  <div class="hl">
+    <h4>Communities</h4>
+    <ion-icon name="search-outline"></ion-icon>
+  </div>
+  <div class="event" *ngFor="let item of communities" [routerLink]="['/community/' + item._id]">
+    <ion-avatar><ion-img [src]="item.featuredImgUrl ? item.featuredImgUrl : ''"></ion-img></ion-avatar>
+    <span class="txt">
+      <p>{{ item.name }}</p>
+      <small>3 members</small>
+    </span>
+  </div>
+  <!-- <div class="event">
+    <ion-avatar><ion-img src="assets/img/st.webp"></ion-img></ion-avatar>
+    <span class="txt">
+      <p>Engineers and Scientists National Association</p>
+      <small>12 members</small>
+    </span>
+  </div>
+  <div class="event">
+    <ion-avatar><ion-img src="assets/img/yu.png"></ion-img></ion-avatar>
+    <span class="txt">
+      <p>World Technology Council</p>
+      <small>89k members</small>
+    </span>
+  </div> -->
+</div>

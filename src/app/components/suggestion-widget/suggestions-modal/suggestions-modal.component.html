@@ -1,0 +1,14 @@
+<ion-content class="core">
+  <div class="wrap">
+    <div class="hd">
+      <ion-icon name="close" (click)="close()"></ion-icon>
+      <h4>Suggested {{ sType }}</h4>
+    </div>
+    <div class="persons" *ngIf="sType === 'people'">
+      <app-suggestion-block *ngFor="let pers of suggestions" [profile]="pers" [currentProfile]="profile"></app-suggestion-block>
+    </div>
+    <div class="persons" *ngIf="sType === 'institutions'">
+      <app-suggestion-block *ngFor="let pers of instSuggestions" [institution]="pers" [currentProfile]="profile"></app-suggestion-block>
+    </div>
+  </div>
+</ion-content>

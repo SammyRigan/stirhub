@@ -1,0 +1,22 @@
+<div class="heady">
+  <ion-icon name="close" (click)="close()"></ion-icon>
+  <h4>add {{ type }}</h4>
+</div>
+<ion-content class="core">
+  <div class="mod-blooper">
+    <!-- <span class="warn">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      <small>Fill form to add a {{ type }}</small>
+    </span> -->
+    <ion-input type="text" name="fullName" [(ngModel)]="person.fullName" placeholder="Name"></ion-input>
+    <ion-input type="email" name="email" [(ngModel)]="person.email" placeholder="Email"></ion-input>
+    <ion-input type="tel" name="telephone" [(ngModel)]="person.telephone" placeholder="Telephone"></ion-input>
+    <ion-input type="text" name="title" [(ngModel)]="person.title" placeholder="Role"></ion-input>
+    <!-- <span class="img" [hidden]="person.imageUrl" (click)="addMedia()">
+      <small>Add Image</small>
+      <ion-icon name="image"></ion-icon>
+    </span> -->
+    <span class="preview" [ngStyle]="{'background-image': 'url(' + person.imageUrl + ')'}" [hidden]="!person.imageUrl" (click)="addMedia()"></span>
+    <ion-button [disabled]="!person.fullName || !person.title" (click)="addPerson()">add</ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,74 @@
+<ion-content>
+  <div class="wrap">
+    <span class="close" (click)="close()">
+      <ion-icon name="chevron-back"></ion-icon>
+    </span>
+    <div class="lt">
+      <ion-slides #slider [options]="slideOpts">
+        <ion-slide *ngFor="let item of timePost.imgUrls">
+          <img [src]="item">
+        </ion-slide>
+      </ion-slides>
+      <span class="arr" (click)="slider.slidePrev(); getActiveSlide()" [hidden]="activeIndex === 0"><ion-icon name="arrow-back"></ion-icon></span>
+      <span class="arr" (click)="slider.slideNext(); getActiveSlide()" [hidden]="activeIndex === timePost.imgUrls.length - 1"><ion-icon name="arrow-forward"></ion-icon></span>
+      <div class="actions">
+        <span [ngClass]="{'act': isLiked}" (click)="like()">
+          <ion-icon [name]="isLiked ? 'heart' : 'heart-outline'"></ion-icon>
+          <small>{{ timePost.likes }}</small>
+        </span>
+        <span (click)="comment()">
+          <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+          <small>{{ timePost.comments }}</small>
+        </span>
+        <span>
+          <ion-icon name="arrow-redo-outline"></ion-icon>
+          <!-- <small>share</small> -->
+        </span>
+      </div>
+    </div>
+    <div class="rt">
+      <div class="m-comm">
+        <div class="use">
+          <div class="pen">
+            <ion-avatar><ion-img [src]="postOwner?.profileImgUrl ? postOwner.profileImgUrl : 'assets/img/man.png'" [hidden]="!postOwner?.profileImgUrl"></ion-img></ion-avatar>
+            <div class="txt">
+              <h4>{{ postOwner?.name ? postOwner?.name : postOwner?.firstname + ' ' + postOwner?.lastname }} <i>{{ timePost.date | dateFrom:timePost.date }}</i></h4>
+              <small>{{ postOwner?.knownFor ? postOwner?.knownFor : postOwner?.email }}</small>
+            </div>
+          </div>
+          <ion-icon name="ellipsis-horizontal"></ion-icon>
+        </div>
+        <div class="ctn">
+          <p>{{ timePost.text }}</p>
+        </div>
+        <div class="stats">
+          <span class="ic">
+            <ion-icon name="heart"></ion-icon>
+            <small>{{ timePost.likes }}</small>
+          </span>
+          <div class="prt">
+            <small>{{ timePost.comments }} Comments</small>
+            <small>{{ timePost.shares }} Shares</small>
+          </div>
+        </div>
+        <div class="actions-m">
+          <span [ngClass]="{'act': isLiked}" (click)="like()">
+            <ion-icon name="heart"></ion-icon>
+            <small>{{ isLiked ? 'liked' : 'like' }}</small>
+          </span>
+          <span (click)="comment()">
+            <ion-icon name="chatbox-ellipses"></ion-icon>
+            <small>comment</small>
+          </span>
+          <span>
+            <ion-icon name="arrow-redo"></ion-icon>
+            <small>share</small>
+          </span>
+        </div>
+      </div>
+      <div class="comments">
+        <app-comment-card *ngFor="let comment of comments" [timePost]="comment" [postOwner]="postOwner" [doc]="doc" [profile]="profile"></app-comment-card>
+      </div>
+    </div>
+  </div>
+</ion-content>

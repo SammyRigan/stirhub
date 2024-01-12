@@ -1,0 +1,15 @@
+<!-- <ion-content> -->
+  <div class="wrap" [ngClass]="{'pop': pop}">
+    <div class="topp" (click)="pop = !pop">
+      <h4>Messages</h4>
+      <div class="ics">
+        <ion-icon name="create-outline" (click)="$event.stopPropagation(); contacts();"></ion-icon>
+        <ion-icon [name]="pop ? 'chevron-down-outline' : 'chevron-up-outline'" (click)="$event.stopPropagation(); pop = !pop"></ion-icon>
+      </div>
+    </div>
+    <div class="m-w" [hidden]="!pop">
+      <small *ngIf="allThreads.length === 0">You have no messages. Start a new conversation.</small>
+      <app-thread-card *ngFor="let threader of allThreads" [thread]="threader" [profile]="profile" (hider)="selectThread($event, threader)"></app-thread-card>
+    </div>
+  </div>
+  <app-chat-box *ngIf="currentReceiver" [thread]="thread" [receiver]="currentReceiver" [sender]="profile" (dropper)="currentReceiver = null" (hider)="pop = !pop"></app-chat-box>

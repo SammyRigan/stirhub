@@ -1,0 +1,151 @@
+
+<div class="heady">
+  <ion-icon name="close-outline" (click)="close()"></ion-icon>
+  <h4>Add Research Work</h4>
+  <div class="t-butts" hidden>
+    <i *ngIf="research._id === 'null' || !research._id"></i>
+    <ion-button *ngIf="research._id && research._id !== 'null'"><ion-icon name="eye"></ion-icon>view</ion-button>
+    <span>
+      <ion-button [disabled]="!research.title || !research.brief || !research.imageUrl" (click)="createResearch()" *ngIf="research._id && research._id !== 'null'">save changes</ion-button>
+      <ion-button class="aim" [disabled]="!research.title || !research.brief || !resImg" (click)="createResearch()" *ngIf="research._id === 'null' || !research._id"><ion-icon name="share"></ion-icon>Create</ion-button>
+    </span>
+  </div>
+</div>
+<ion-content class="padded">
+  <div class="m-wrap">
+    <div class="q-wrap litt space">
+      <div class="in-wrap" [hidden]="profile.name">
+        <p>Title <i>👋 Required</i></p>
+        <ion-input type="text" name="title" [(ngModel)]="research.title"></ion-input>
+      </div>
+      <div class="in-wrap">
+        <p>Brief Description <i>👋 Required</i></p>
+        <ion-textarea name="brief" [(ngModel)]="research.brief" autoGrow ></ion-textarea>
+      </div>
+      <div class="in-wrap">
+        <p>Research File</p>
+        <input class="picker" type="file" accept=".pdf" #picker (change)="uploadMedia($event)" [hidden]="research.fileUrl">
+      </div>
+      <div class="in-wrap">
+        <div class="io">
+          <p>Research Lead</p>
+          <ion-button class="opec nopads" (click)="addLead()"><ion-icon name="add"></ion-icon></ion-button>
+        </div>
+        <div class="pt-w">
+          <div class="pt" [hidden]="!research?.lead">
+            <div class="pt-t">
+              <p>{{ research.lead?.fullName }}</p>
+              <small>{{ research.lead?.title }}</small>
+            </div>
+            <ion-icon class="pt-c" name="close" (click)="research.lead = null"></ion-icon>
+          </div>
+        </div>
+      </div>
+      <div class="in-wrap">
+        <div class="io">
+          <p>Research Team</p>
+          <ion-button class="opec nopads" (click)="addTeamMember()"><ion-icon name="add"></ion-icon></ion-button>
+        </div>
+        <div class="pt-w">
+          <div class="pt" *ngFor="let member of research.team">
+            <div class="pt-t">
+              <p>{{ member.fullName }}</p>
+              <small>{{ member.title }}</small>
+            </div>
+            <ion-icon class="pt-c" name="close" (click)="removeTeamMember(member)"></ion-icon>
+          </div>
+        </div>
+      </div>
+      <div class="in-wrap">
+        <div class="io">
+          <p>Research Sponsors</p>
+          <ion-button class="opec nopads" (click)="addSponsor()"><ion-icon name="add"></ion-icon></ion-button>
+        </div>
+        <div class="pt-w">
+          <div class="pt" *ngFor="let member of research.sponsors">
+            <div class="pt-t">
+              <p>{{ member.name }}</p>
+              <small>{{ member.title }}</small>
+            </div>
+            <ion-icon class="pt-c" name="close" (click)="removeSponsor(member)"></ion-icon>
+          </div>
+        </div>
+      </div>
+      <div class="in-wrap">
+        <p>Feature Image <i>👋 Required</i></p>
+        <input type="file" accept=".png, .jpg, .jpeg" #image (change)="readFile($event)">
+        <span class="preview" *ngIf="tempUri" [ngStyle]="{'background-image': 'url(' + tempUri + ')'}" (click)="image.click()"></span>
+      </div>
+      <!-- <span class="in-wrap pal">
+        <ion-input type="text" name="title" [(ngModel)]="research.title" placeholder="Title..."></ion-input>
+      </span> -->
+      <!-- <span class="pace pal">
+        <ion-textarea name="desc" [(ngModel)]="research.brief" placeholder="Brief description..." autoGrow></ion-textarea>
+      </span> -->
+      <!-- <span class="pace pal fl">
+        <div class="til">
+          <h4>Research File</h4>
+        </div>
+        <input class="picker" type="file" accept=".pdf" #picker (change)="uploadMedia($event)" [hidden]="research.fileUrl">
+        <span class="loh" [hidden]="!research._id || !research.fileUrl">
+          <small><ion-icon name="arrow-down"></ion-icon><a [href]="research.fileUrl">Downlaod file</a></small>
+          <ion-icon name="close" (click)="research.fileUrl = null"></ion-icon>
+        </span>
+      </span> -->
+      <!-- <span class="pace pal fl">
+        <div class="til">
+          <h4>Research Team</h4>
+          <ion-button class="opec" (click)="addTeamMember()"><ion-icon name="add"></ion-icon></ion-button>
+        </div>
+        <div class="pt-w">
+          <div class="pt" *ngFor="let member of research.team">
+            <ion-icon class="pt-c" name="close" (click)="removeTeamMember(member)"></ion-icon>
+            <ion-avatar><ion-img [src]="member.imageUrl ? member.imageUrl : 'assets/img/user.png'"></ion-img></ion-avatar>
+            <p>{{ member.fullName }}</p>
+            <small>{{ member.title }}</small>
+          </div>
+        </div>
+      </span> -->
+      <!-- <span class="pace pal fl">
+        <div class="til">
+          <h4>Research Sponsors</h4>
+          <ion-button class="opec" (click)="addSponsor()"><ion-icon name="add"></ion-icon></ion-button>
+        </div>
+        <div class="pt-w">
+          <div class="pt" *ngFor="let member of research.sponsors">
+            <ion-icon class="pt-c" name="close" (click)="removeSponsor(member)"></ion-icon>
+            <ion-avatar><ion-img [src]="member.imgUrl ? member.imgUrl : 'assets/img/user.png'"></ion-img></ion-avatar>
+            <p>{{ member.name }}</p>
+            <small>{{ member.title }}</small>
+          </div>
+        </div>
+      </span> -->
+    </div>
+    <div class="side litt space">
+      <!-- <div class="set pal fl pace">
+        <div class="til">
+          <h4>feature image</h4>
+        </div>
+        <input type="file" accept=".png, .jpg, .jpeg" #image (change)="readFile($event)" hidden>
+        <span class="img" (click)="image.click()" [hidden]="tempUri">
+          <ion-icon name="add"></ion-icon>
+        </span>
+        <span class="preview" *ngIf="tempUri" [ngStyle]="{'background-image': 'url(' + tempUri + ')'}" (click)="image.click()"></span>
+      </div> -->
+
+      <!-- <span class="pace pal fl">
+        <div class="til">
+          <h4>Research Lead</h4>
+          <ion-button class="opec" (click)="addLead()"><ion-icon name="add"></ion-icon></ion-button>
+        </div>
+          <div class="pt" [hidden]="!research?.lead">
+            <ion-icon class="pt-c" name="close" (click)="research.lead = null"></ion-icon>
+            <ion-avatar><ion-img [src]="research.lead?.imageUrl ? research.lead?.imageUrl : 'assets/img/user.png'"></ion-img></ion-avatar>
+            <p>{{ research.lead?.fullName }}</p>
+            <small>{{ research.lead?.title }}</small>
+          </div>
+      </span> -->
+    </div>
+    <ion-button class="uoi" (click)="createResearch()" *ngIf="research._id === 'null' || !research._id">Save</ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,132 @@
+<ion-content class="core">
+  <div class="heady">
+    <ion-icon name="arrow-back-outline" (click)="close()"></ion-icon>
+    <h4>Edit Profile</h4>
+    <ion-button [disabled]="false" (click)="save()">save</ion-button>
+  </div>
+  <div class="pro">
+    <div class="banner" [ngStyle]="{'background-image': 'url(' + (tempBannerUri ? tempBannerUri : profile.bannerUrl) + ')'}">
+      <input type="file" accept=".png, .jpg, .jpeg" #image (change)="readFile($event, 'profile')" hidden>
+      <input type="file" accept=".png, .jpg, .jpeg" #banner (change)="readFile($event, 'banner')" hidden>
+      <div class="butts">
+        <ion-button (click)="banner.click()"><ion-icon name="camera-outline"></ion-icon></ion-button>
+        <ion-button (click)="removeBanner()"><ion-icon name="close-outline"></ion-icon></ion-button>
+      </div>
+      <ion-avatar>
+        <ion-button (click)="image.click()"><ion-icon name="camera-outline"></ion-icon></ion-button>
+        <ion-img [hidden]="!tempUri && !profile.profileImgUrl" [src]="tempUri ? tempUri : profile.profileImgUrl"></ion-img>
+      </ion-avatar>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="in-wrap" [hidden]="profile.name">
+      <p>first name</p>
+      <ion-input type="text" name="fname" [(ngModel)]="profile.firstname"></ion-input>
+    </div>
+    <div class="in-wrap" [hidden]="profile.name">
+      <p>last name</p>
+      <ion-input type="text" name="lname" [(ngModel)]="profile.lastname"></ion-input>
+    </div>
+    <div class="in-wrap" [hidden]="!profile.name">
+      <p>name</p>
+      <ion-input type="text" name="coname" [(ngModel)]="profile.name"></ion-input>
+    </div>
+    <div class="in-wrap">
+      <p>username</p>
+      <ion-input type="text" name="uname" [(ngModel)]="profile.username" (keyup)="formatUsername()"></ion-input>
+    </div>
+    <div class="in-wrap">
+      <p>about  <i>👋 {{profile.briefBio ? profile.briefBio.length : 0}}/150</i></p>
+      <ion-textarea name="brief" [(ngModel)]="profile.briefBio" autoGrow maxlength="150"></ion-textarea>
+    </div>
+    <div class="in-wrap" [hidden]="profile.name">
+      <p>field of study</p>
+      <ion-input class="ic" type="text" name="fos" [(ngModel)]="profile.studyField">
+        <ion-icon name="book" slot="end"></ion-icon>
+      </ion-input>
+    </div>
+    <!-- <div class="in-wrap" [hidden]="profile.name">
+      <p>What do you want to be known for?  <i>👋 {{profile.knownFor ? profile.knownFor.length : 0}}/24</i></p>
+      <ion-input class="ic" type="text" name="fos" maxlength="24" [(ngModel)]="profile.knownFor">
+        <ion-icon name="diamond" slot="end"></ion-icon>
+      </ion-input>
+    </div> -->
+    <div class="in-wrap" [hidden]="!profile.iType">
+      <p>What best describes you?</p>
+      <ion-select [(ngModel)]="profile.knownFor">
+        <ion-select-option value="industry" *ngIf="profile.iType === 'institution'">Business</ion-select-option>
+        <ion-select-option value="academia" *ngIf="profile.iType === 'institution'">Academia</ion-select-option>
+        <ion-select-option value="research institution" *ngIf="profile.iType === 'institution'">Research Institution</ion-select-option>
+        <ion-select-option value="development partner" *ngIf="profile.iType === 'institution'">Development Partner</ion-select-option>
+        <ion-select-option value="practitioner" *ngIf="profile.iType === 'individual'">Practitioner</ion-select-option>
+        <ion-select-option value="student" *ngIf="profile.iType === 'individual'">Student</ion-select-option>
+        <ion-select-option value="incubator" *ngIf="profile.iType === 'institution'">Incubator</ion-select-option>
+      </ion-select>
+      <ion-icon class="in-l" name="diamond" slot="end"></ion-icon>
+      <!-- <ion-icon name="person"></ion-icon> -->
+    </div>
+    <div class="in-wrap">
+      <p>telephone</p>
+      <ion-input class="ic" type="tel" name="telephone" [(ngModel)]="profile.telephone">
+        <ion-icon name="call" slot="end"></ion-icon>
+      </ion-input>
+    </div>
+    <div class="in-wrap">
+      <p>Address</p>
+      <ion-input type="text" name="add" [(ngModel)]="profile.address.address">
+        <ion-icon name="pin" slot="end"></ion-icon>
+      </ion-input>
+    </div>
+    <div class="in-wrap" [hidden]="!profile.name">
+      <p>website</p>
+      <ion-input class="ic" type="url" name="web" [(ngModel)]="profile.website">
+        <ion-icon name="earth" slot="end"></ion-icon>
+      </ion-input>
+    </div>
+    <div class="in-wrap" id="open-date-input" [hidden]="profile.name">
+      <p>Date of Birth</p>
+      <ion-input type="text" name="start" [value]="profile.birthday | date:'d MMM YYYY'" readonly></ion-input>
+      <ion-modal trigger="open-date-input">
+        <ng-template>
+          <ion-content>
+            <ion-datetime #popoverDatetime (ionChange)="profile.birthday = popoverDatetime.value" presentation="date" showDefaultButtons="true"></ion-datetime>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+    </div>
+    <div class="split" [hidden]="profile.name">
+      <div class="opt" (click)="profile.gender = 'male'">
+        <ion-icon [name]="profile.gender === 'male' ? 'radio-button-on' : 'radio-button-off'"></ion-icon>
+        <p>male</p>
+      </div>
+      <div class="opt" (click)="profile.gender = 'female'">
+        <ion-icon [name]="profile.gender === 'female' ? 'radio-button-on' : 'radio-button-off'"></ion-icon>
+        <p>female</p>
+      </div>
+    </div>
+    <div class="in-wrap">
+      <p>linkedin</p>
+      <ion-input class="ic" type="text" name="linkedin" [(ngModel)]="profile.linkedin">
+        <ion-icon name="logo-linkedin" slot="end"></ion-icon>
+      </ion-input>
+    </div>
+    <div class="in-wrap">
+      <p>facebook</p>
+      <ion-input class="ic" type="text" name="fbook" [(ngModel)]="profile.facebook">
+        <ion-icon name="logo-facebook" slot="end"></ion-icon>
+      </ion-input>
+    </div>
+    <div class="in-wrap">
+      <p>instagram</p>
+      <ion-input class="ic" type="text" name="insta" [(ngModel)]="profile.instagram">
+        <ion-icon name="logo-instagram" slot="end"></ion-icon>
+      </ion-input>
+    </div>
+    <div class="in-wrap">
+      <p>twitter</p>
+      <ion-input class="ic" type="text" name="twitter" [(ngModel)]="profile.twitter">
+        <ion-icon name="logo-twitter" slot="end"></ion-icon>
+      </ion-input>
+    </div>
+  </div>
+</ion-content>

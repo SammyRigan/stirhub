@@ -1,0 +1,16 @@
+
+<div class="heady">
+  <ion-icon name="close" (click)="close()"></ion-icon>
+  <h4>Start Conversation</h4>
+</div>
+<ion-content>
+  <div class="wrap">
+    <div class="person" *ngFor="let person of people" (click)="selectContact(person)">
+      <ion-avatar><ion-img [src]="person.profileImgUrl" [hidden]="!person.profileImgUrl"></ion-img></ion-avatar>
+      <span>
+        <h4>{{ person.name ? person.name : person.firstname + ' ' + person.lastname }}</h4>
+        <small>{{ person.knownFor ? person.knownFor : person.iType }}</small>
+      </span>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,8 @@
+<div class="wrap">
+  <ion-avatar><ion-img [hidden]="!profile?.profileImgUrl" [src]="profile?.profileImgUrl"></ion-img></ion-avatar>
+  <span>
+    <h4 [hidden]="profile" style="width: 100px; height: 18px; background-color: #eee;"></h4>
+    <h4 [hidden]="!profile">{{ profile?.name ? profile?.name : (profile?.firstname + ' ' + profile?.lastname) }}</h4>
+    <small>{{ profile?.iType }}</small>
+  </span>
+</div>

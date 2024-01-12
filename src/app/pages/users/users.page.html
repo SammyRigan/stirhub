@@ -1,0 +1,47 @@
+<ion-content class="core">
+  <app-header [profile]="profile"></app-header>
+  <div class="noner" [hidden]="!isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+  <div class="main" *ngIf="!isLoading">
+    <div class="lt">
+      <div class="very" *ngIf="col === 'individual'">
+        <div class="p-tile pal" *ngFor="let person of people" [routerLink]="['/profile/individual/' + person._id]">
+          <div class="banner" [ngStyle]="{'background-image': 'url(' + person.bannerUrl + ')'}"></div>
+          <div class="person">
+            <ion-avatar><ion-img [src]="person.profileImgUrl" [hidden]="!person.profileImgUrl"></ion-img></ion-avatar>
+            <span>
+              <h4>{{ person.firstname + ' ' + person.lastname }}</h4>
+              <small>{{ person.email }}</small>
+              <p>{{ person.knownFor }}</p>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="very" *ngIf="col === 'institution'">
+        <div class="p-tile pal" *ngFor="let person of institutions" [routerLink]="['/profile/individual/' + person._id]">
+          <div class="banner" [ngStyle]="{'background-image': 'url(' + person.bannerUrl + ')'}"></div>
+          <div class="person">
+            <ion-avatar><ion-img [src]="person.profileImgUrl" [hidden]="!person.profileImgUrl"></ion-img></ion-avatar>
+            <span>
+              <h4>{{ person.name }}</h4>
+              <small>{{ person.email }}</small>
+              <p>{{ person.knownFor }}</p>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rt">
+      <app-suggestion-widget [profile]="profile"></app-suggestion-widget>
+
+      <!-- <ion-button class="ptw" (click)="makePost()">make post</ion-button> -->
+    </div>
+  </div>
+</ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="profile?.name" hidden>
+  <ion-fab-button>
+    <ion-icon name="pencil-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

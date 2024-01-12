@@ -1,0 +1,61 @@
+<div class="pers" *ngIf="profile && !currentProfile.name">
+  <ion-avatar [routerLink]="['/profile/' + (profile?.name ? 'institution' : 'individual') + '/' + profile?._id]" (click)="close()"><ion-img [hidden]="!profile?.profileImgUrl" [src]="profile?.profileImgUrl"></ion-img></ion-avatar>
+  <div class="txt">
+    <p>{{ profile.firstname + ' ' + profile.lastname }}</p>
+    <small [hidden]="!profile?.knownFor">{{ profile?.knownFor }}</small>
+    <small [hidden]="profile?.knownFor" style="text-transform: lowercase">{{ profile?.email }}</small>
+  </div>
+  <span (click)="follow()" [hidden]="currentProfile.following.includes(profile?._id)">
+    <ion-icon name="add"></ion-icon>
+    <small>Follow</small>
+  </span>
+  <span (click)="unfollow()" [hidden]="!currentProfile.following.includes(profile?._id)" class="un">
+    <small>Unfollow</small>
+  </span>
+</div>
+
+<div class="pers" *ngIf="institution && !currentProfile.name">
+  <ion-avatar [routerLink]="['/profile/' + (institution?.name ? 'institution' : 'individual') + '/' + institution?._id]" (click)="close()"><ion-img [hidden]="!institution?.profileImgUrl" [src]="institution?.profileImgUrl"></ion-img></ion-avatar>
+  <div class="txt">
+    <p>{{ institution?.name }}</p>
+    <small>{{ institution?.knownFor }}</small>
+  </div>
+  <span (click)="like()" [hidden]="currentProfile.liked.includes(institution?._id)">
+    <ion-icon name="add"></ion-icon>
+    <small>Like</small>
+  </span>
+  <span (click)="unlike()" [hidden]="!currentProfile.liked.includes(institution?._id)" class="un">
+    <small>UnLike</small>
+  </span>
+</div>
+
+<div class="pers" *ngIf="profile && currentProfile.name">
+  <ion-avatar [routerLink]="['/profile/' + (profile?.name ? 'institution' : 'individual') + '/' + profile?._id]" (click)="close()"><ion-img [hidden]="!profile?.profileImgUrl" [src]="profile?.profileImgUrl"></ion-img></ion-avatar>
+  <div class="txt">
+    <p>{{ profile.firstname + ' ' + profile.lastname }}</p>
+    <small [hidden]="!profile?.knownFor">{{ profile?.knownFor }}</small>
+    <small [hidden]="profile?.knownFor" style="text-transform: lowercase">{{ profile?.email }}</small>
+  </div>
+  <span (click)="observe()" [hidden]="currentProfile.observing.includes(profile?._id)">
+    <ion-icon name="add"></ion-icon>
+    <small>Observe</small>
+  </span>
+  <span (click)="unobserve()" [hidden]="!currentProfile.observing.includes(profile?._id)" class="un">
+    <small>Disregard</small>
+  </span>
+</div>
+
+<div class="pers" *ngIf="institution && currentProfile.name">
+  <ion-avatar [routerLink]="['/profile/' + (institution?.name ? 'institution' : 'individual') + '/' + institution?._id]" (click)="close()"><ion-img [hidden]="!institution?.profileImgUrl" [src]="institution?.profileImgUrl"></ion-img></ion-avatar>
+  <div class="txt">
+    <p>{{ institution.name }}</p>
+    <small>{{ institution?.knownFor }}</small>
+  </div>
+  <span (click)="ifollow()" [hidden]="currentProfile.following.includes(institution?._id)">
+    <ion-icon name="add"></ion-icon>
+    <small>Follow</small>
+  </span>
+  <span (click)="iunfollow()" [hidden]="!currentProfile.following.includes(institution?._id)" class="un">
+    <small>Unfollow</small>
+  </span>
+</div>

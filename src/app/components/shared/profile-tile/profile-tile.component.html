@@ -1,0 +1,52 @@
+<div class="pro pal">
+  <div class="p-wrap">
+    <ion-avatar [routerLink]="['/profile/' + profile?.iType + '/' + profile?._id]"><ion-img [hidden]="!profile?.profileImgUrl" [src]="profile?.profileImgUrl"></ion-img></ion-avatar>
+    <div class="p-desc">
+      <h4 [routerLink]="['/profile/' + profile?.iType + '/' + profile?._id]">{{ profile?.name ? profile?.name : (profile?.firstname + ' ' + profile?.lastname) }}</h4>
+      <small>{{ profile?.knownFor }}</small>
+    </div>
+  </div>
+  <div class="ff">
+    <div class="ff-i" (click)="viewClout(profile?.followers, 'user-profiles', 'followers')">
+      <p>{{ profile?.followers.length }}</p>
+      <small>followers</small>
+    </div>
+    <div class="ff-i" (click)="viewClout(profile?.following, 'user-profiles', 'following')">
+      <p>{{ profile?.following.length }}</p>
+      <small>following</small>
+    </div>
+  </div>
+  <div class="links">
+    <div class="b-high"></div>
+    <span class="but">
+      <ion-icon name="bag-handle"></ion-icon>
+      <small>Exchange</small>
+      <!-- <ion-icon name="arrow-forward-outline"></ion-icon> -->
+    </span>
+    <span class="but" [routerLink]="['/archives']">
+      <ion-icon name="documents"></ion-icon>
+      <small>research work</small>
+      <!-- <ion-icon name="arrow-forward-outline"></ion-icon> -->
+    </span>
+    <span class="but" [routerLink]="['/events-hub']">
+      <ion-icon name="calendar"></ion-icon>
+      <small>Events Hub</small>
+      <!-- <ion-icon name="arrow-forward-outline"></ion-icon> -->
+    </span>
+    <span class="but" [routerLink]="['/notice-board']">
+      <ion-icon name="megaphone"></ion-icon>
+      <small>Notice Board</small>
+      <!-- <ion-icon name="arrow-forward-outline"></ion-icon> -->
+    </span>
+    <span class="but" [routerLink]="['/users/individual']">
+      <ion-icon name="people"></ion-icon>
+      <small>people</small>
+      <!-- <ion-icon name="arrow-forward-outline"></ion-icon> -->
+    </span>
+    <span class="but" [routerLink]="['/users/institution']">
+      <ion-icon name="school"></ion-icon>
+      <small>institutions</small>
+      <!-- <ion-icon name="arrow-forward-outline"></ion-icon> -->
+    </span>
+  </div>
+</div>

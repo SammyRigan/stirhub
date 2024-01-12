@@ -1,0 +1,55 @@
+<ion-content>
+  <div class="wrap">
+    <div class="rt" >
+      <ion-img class="stir fi" src="assets/img/stir-2.png"></ion-img>
+      <ion-img class="stir se" src="assets/img/stir.png"></ion-img>
+      <!-- <ion-img class="bx-img" src="assets/img/robo.png"></ion-img> -->
+      <!-- <div class="bx-box" style="background-image: url('assets/img/robo-hand.webp');"></div> -->
+      <div class="bx-box">
+        <div class="pot"></div>
+        <div class="pot"></div>
+        <div class="pot"></div>
+        <ion-img src="assets/img/contacts_no-bg.gif"></ion-img>
+      </div>
+    </div>
+    <div class="lt">
+      <div class="lt-wrap">
+        <!-- <small class="alt">Do not have an account? <i>Create one</i></small> -->
+        <div class="main">
+          <ion-img src="assets/img/stirs-logo-g.png"></ion-img>
+          <div class="m-head">
+            <h4>{{ view === 'login' ? 'Hello Again!' : 'Forgot Password?'}}</h4>
+            <small>{{ view === 'login' ? 'Engage and collaborate with research professionals and enthusiasts. The worlds largest hub for Science Technology Innovation and Research.' : 'No worries. Enter your account\'s email address to receive a password reset link.'}}</small>
+          </div>
+
+          <div class="f-wrap">
+            <div class="in-wrap">
+              <small>Email</small>
+              <ion-input type="text" placeholder="example@email.com" name="email" [(ngModel)]="email" (keyup)="removeSpace()"></ion-input>
+              <ion-icon name="at"></ion-icon>
+            </div>
+            <div class="in-wrap" [hidden]="view === 'pass'">
+              <small>Password</small>
+              <ion-input [type]="passType" placeholder="******" name="password" [(ngModel)]="password"></ion-input>
+              <ion-icon name="lock-closed" (click)="passType === 'password' ? passType = 'text' : passType = 'password'"></ion-icon>
+            </div>
+            <ion-button (click)="view === 'login' ? login() : resetPass()">{{ view === 'login' ? 'Login' : 'Send'}}</ion-button>
+
+            <!-- <div class="br"></div> -->
+
+            <span class="fgt">
+              <small (click)="view = 'pass'" [hidden]="view === 'pass'">Forgot password?</small>
+              <small (click)="view = 'login'" [hidden]="view === 'login'">Back to login</small>
+              <span>
+                <ion-icon name="headset"></ion-icon>
+                <small>Contact support</small>
+              </span>
+            </span>
+
+            <span class="su"><small [routerLink]="['/signup']">Don't have an account? <b>Sign up</b> now.</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

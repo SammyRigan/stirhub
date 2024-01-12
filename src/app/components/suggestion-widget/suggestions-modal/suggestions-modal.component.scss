@@ -1,0 +1,24 @@
+
+.hd {
+  display: flex;
+  padding: 20px;
+  background-color: #fff;
+  // border-bottom: solid 1px #0C7C3F30;
+
+  ion-icon {
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  h4 {
+    font-size: 18px;
+    margin-left: 20px;
+    text-transform: capitalize;
+  }
+}
+
+.persons {
+  padding: 10px 20px;
+  display: grid;
+}
+

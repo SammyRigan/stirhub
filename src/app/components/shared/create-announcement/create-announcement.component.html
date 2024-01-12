@@ -1,0 +1,30 @@
+
+<div class="heady">
+  <ion-icon name="close" (click)="close()"></ion-icon>
+  <h4>Make an Announcement</h4>
+</div>
+<ion-content class="padded">
+  <div class="mod-wrap">
+
+    <div class="wrap">
+      <div class="in-wrap">
+        <p>Description <i>👋 {{announcement.text ? announcement.text.length : 0}}/300</i></p>
+        <ion-textarea name="brief" [(ngModel)]="announcement.text" autoGrow maxlength="300"></ion-textarea>
+      </div>
+      <div class="colors">
+        <p>Choose a background color <i>👋 Required</i></p>
+        <div class="sp-gd">
+          <div class="color" *ngFor="let color of colors" [ngStyle]="{'background-color': color}" (click)="announcement.color = color">
+            <ion-icon name="checkmark" [hidden]="announcement.color !== color"></ion-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <!-- <ion-button fill="clear" (click)="deleteEducation()" *ngIf="edIndex >= 0">remove education</ion-button> -->
+      <ion-button class="sv" (click)="addAnnouncement()">Make announcement</ion-button>
+    </div>
+  </div>
+
+</ion-content>

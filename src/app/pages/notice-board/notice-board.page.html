@@ -1,0 +1,26 @@
+<ion-content class="core">
+  <app-header [profile]="profile" [active]="'notice-board'"></app-header>
+  <div class="noner" [hidden]="!isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+  <div class="main" *ngIf="!isLoading">
+    <div class="lt">
+      <div class="ta-ep">
+        <app-post-card [timePost]="post" [profile]="profile" *ngFor="let post of announcements"></app-post-card>
+      </div>
+    </div>
+    <div class="rt">
+      <app-suggestion-widget [profile]="profile"></app-suggestion-widget>
+
+      <!-- <ion-button class="ptw" (click)="makePost()">make post</ion-button> -->
+    </div>
+  </div>
+
+  <app-tabs [active]="'notice'"></app-tabs>
+</ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="profile?.name">
+  <ion-fab-button>
+    <ion-icon name="pencil-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

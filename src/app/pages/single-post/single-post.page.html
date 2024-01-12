@@ -1,0 +1,47 @@
+<ion-content class="core">
+  <app-header [profile]="profile"></app-header>
+
+  <div class="noner" [hidden]="!isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div class="main" *ngIf="!isLoading">
+    <div class="lt">
+      <app-profile-tile [profile]="profile"></app-profile-tile>
+    </div>
+
+    <div class="ml">
+      <ion-button class="pal pea" (click)="goBack()">
+        <span>
+          <ion-icon name="arrow-back"></ion-icon>
+          <h4 [hidden]="!timePost">{{ timePost?.repliedTo ? 'Comment' : 'Post' }}</h4>
+          <h4 [hidden]="timePost">Sorry. Post not found.</h4>
+        </span>
+      </ion-button>
+      <div class="ml-wrap" *ngIf="timePost">
+        <app-post-card [timePost]="timePost" [profile]="profile" (deleted)="deletePost(timePost)" (commented)="makeComment($event)"></app-post-card>
+        <div class="coms pal" *ngIf="comments.length > 0">
+          <app-comment-card *ngFor="let comment of comments" [timePost]="comment" [postOwner]="postOwner" [doc]="doc" [profile]="profile" (deleted)="deletePost(comment)"></app-comment-card>
+        </div>
+      </div>
+      <div class="ml-wrap non" [hidden]="timePost">
+        <ion-img src="assets/img/street.png"></ion-img>
+      </div>
+    </div>
+
+    <div class="rt">
+      <app-suggestion-widget [profile]="profile"></app-suggestion-widget>
+
+      <!-- <ion-button class="ptw" (click)="makePost()">make post</ion-button> -->
+
+      <!-- <div class="ad pal" [ngStyle]="{'background-image': 'url(assets/img/la.jpg)'}"></div> -->
+    </div>
+  </div>
+
+</ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="makePost()">
+    <ion-icon name="pencil-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

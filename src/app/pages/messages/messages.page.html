@@ -1,0 +1,102 @@
+<ion-content class="core">
+  <app-header [profile]="profile" [active]="'messages'"></app-header>
+
+  <div class="noner" [hidden]="!isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div class="main" *ngIf="!isLoading">
+    <div class="lt">
+      <div class="threads pal">
+        <div class="hl">
+          <h4>Messages</h4>
+          <ion-icon name="create-outline" (click)=" contacts()"></ion-icon>
+        </div>
+        <div class="search">
+          <ion-input placeholder="Search messages" clearInput><ion-icon name="search-outline"></ion-icon></ion-input>
+        </div>
+        <div class="t-wrap">
+          <small *ngIf="allThreads.length === 0">You have no messages. Start a new conversation.</small>
+          <app-thread-card *ngFor="let threader of allThreads" [thread]="threader" [profile]="profile" (hider)="selectThread($event, threader)" [ngClass]="{'selT': threader.id === thread?.id}"></app-thread-card>
+        </div>
+      </div>
+      <div class="th-alt pal" [ngClass]="{'view': thread}">
+        <div class="msg-wrap" *ngIf="pop">
+          <div class="topp">
+            <div class="po">
+              <ion-icon name="arrow-back" (click)="thread = null; receiver = null; pop = !pop"></ion-icon>
+              <ion-avatar><ion-img [hidden]="!receiver?.profileImgUrl" [src]="receiver?.profileImgUrl"></ion-img></ion-avatar>
+              <span>
+                <h4>{{ receiver.adminId ? receiver.name : (receiver.firstname + ' ' + receiver.lastname) }}</h4>
+                <small>{{ receiver.knownFor ? receiver.knownFor : receiver.email }}</small>
+              </span>
+            </div>
+            <div class="ics">
+              <!-- <ion-icon name="create-outline" (click)="contacts()"></ion-icon> -->
+              <ion-icon name="ellipsis-horizontal"></ion-icon>
+            </div>
+          </div>
+          <div class="chats" id="chats">
+            <div class="mess" *ngFor="let mess of messages" [ngClass]="{'mine': mess.senderId !== receiver._id, 'hasImg': (mess.imgUrls && mess.imgUrls.length > 0) || mess.fileUrl}">
+              <ion-avatar><ion-img [hidden]="!receiver.profileImgUrl" [src]="receiver.profileImgUrl"></ion-img></ion-avatar>
+              <div class="desc">
+                <div class="file-media" *ngIf="mess.fileUrl">
+                  <ion-icon name="document-attach-sharp"></ion-icon>
+                  <a [href]="mess.fileUrl" target="_blank">File attached</a>
+                  <ion-icon name="download-outline"></ion-icon>
+                </div>
+                <div class="chat-media" [ngClass]="{'mo': mess.imgUrls.length === 2, 'ko': mess.imgUrls.length === 3, 'go': mess.imgUrls.length === 4 }" *ngIf="mess.imgUrls && mess.imgUrls.length > 0">
+                  <div class="c-img" *ngFor="let cim of mess.imgUrls" [ngStyle]="{'background-image': 'url(' + cim + ')'}"></div>
+                </div>
+                <div class="d-m">
+                  <p>{{ mess.text }}</p>
+                </div>
+                <small>{{ mess.date | date:'medium' }}</small>
+              </div>
+            </div>
+          </div>
+          <a href="#bottom" id="bottom"></a>
+          <div class="chatter">
+            <div class="media">
+              <span class="post-img" *ngFor="let img of tempImgUrls">
+                <ion-img [src]="img.url"></ion-img>
+                <small>{{ img.name }}</small>
+                <ion-icon name="close" (click)="images.splice(img.id, 1); tempImgUrls.splice(img.id)"></ion-icon>
+              </span>
+              <span class="post-img" *ngIf="msgFile">
+                <div class="pic">
+                  <ion-icon name="document-attach"></ion-icon>
+                </div>
+                <small>{{ msgFile.name }}</small>
+                <ion-icon name="close" (click)="msgFile = null"></ion-icon>
+              </span>
+              <div class="me-pad" *ngIf="sending">
+                <ion-spinner name="crescent"></ion-spinner>
+              </div>
+            </div>
+            <ion-textarea placeholder="Start a new message..." spellcheck [(ngModel)]="message.text" autoGrow [readonly]="sending"></ion-textarea>
+            <div class="sub">
+              <input type="file" accept=".png, .jpg, .jpeg" #image (change)="readFile($event)" hidden [disabled]="msgFile || video">
+              <input type="file" accept=".pdf, .docx, .docs, .ppt, .xls, .csv" #fileB (change)="msgFile = $event.target.files[0]" hidden [disabled]="images.length > 0 || video">
+              <ion-icon name="image-outline" (click)="image.click()"></ion-icon>
+              <ion-icon name="attach-outline" (click)="fileB.click()"></ion-icon>
+              <ion-button (click)="sendMessage()" [disabled]="!message.text && !video && !msgFile && images.length === 0">send</ion-button>
+            </div>
+          </div>
+        </div>
+        <div class="no-sel" [hidden]="pop">
+          <div class="ns-wrap">
+            <h4>Select a message</h4>
+            <small>Choose from your existing conversations or start a new one.</small>
+            <ion-button (click)=" contacts()">New conversation</ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="rt">
+      <div class="ad pal" [ngStyle]="{'background-image': 'url(assets/img/la.jpg)'}"></div>
+    </div> -->
+  </div>
+
+  <app-tabs [active]="'messages'"></app-tabs>
+</ion-content>

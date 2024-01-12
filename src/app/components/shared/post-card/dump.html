@@ -1,0 +1,32 @@
+<div class="ctn">
+  <p>{{ mainPost?.text }}</p>
+  <div class="im-w" [ngClass]="{'mo': mainPost?.imgUrls.length > 1}" *ngIf="mainPost?.imgUrls.length === 1">
+    <div class="d-w" *ngFor="let img of mainPost?.imgUrls" (click)="$event.stopPropagation(); viewMedia(mainPost?.imgUrls.indexOf(img))">
+      <ion-img [src]="img"></ion-img>
+    </div>
+  </div>
+  <div class="im-w mo" [ngClass]="{'ko': mainPost?.imgUrls.length === 3}" [hidden]="mainPost?.imgUrls.length === 0" *ngIf="mainPost?.imgUrls.length > 1">
+    <div class="d-w" *ngFor="let img of mainPost?.imgUrls" [ngStyle]="{'background-image': 'url(' + img + ')'}" (click)="$event.stopPropagation(); viewMedia(mainPost?.imgUrls.indexOf(img))">
+      <!-- <img [src]="img"> -->
+    </div>
+  </div>
+  <div class="im-w" [hidden]="!mainPost?.videoUrl" (click)="$event.stopPropagation()">
+    <video controls playsinline *ngIf="mainPost?.videoUrl" #postVideo>
+      <source [src]="mainPost?.videoUrl" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  <div class="polls" *ngIf="mainPost?.pollId">
+    <div class="options" *ngIf="profile._id === mainPost?.profileId || voted">
+      <span class="opt" *ngFor="let opt of poll?.options">
+        <div class="opt-v" [ngStyle]="{'width': (opt.amount ? opt.amount / poll?.responses.length * 100 : 0) + '%'}"></div>
+        <small>{{ opt.value }} <ion-icon name="checkmark-circle-outline" *ngIf="voted && voted.optionIndex === opt.index"></ion-icon></small>
+        <small>{{ opt.amount ? returnWhole(opt.amount / poll?.responses.length * 100) : 0 }}%</small>
+      </span>
+    </div>
+    <div class="options" *ngIf="profile?._id !== mainPost?.profileId && !voted">
+      <ion-button class="nopads" *ngFor="let opt of poll?.options" (click)="$event.stopPropagation(); vote(opt)">{{ opt.value }}</ion-button>
+    </div>
+    <small class="ps">{{ poll?.responses.length }} votes &#183; {{ poll?.closed ? 'Final results' : 'ends ' + (due | dateFrom:due) }}</small>
+  </div>
+</div>

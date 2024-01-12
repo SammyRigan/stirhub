@@ -1,0 +1,20 @@
+<ion-content class="core">
+  <div class="wrap">
+    <div class="hd">
+      <ion-icon name="close" (click)="close()"></ion-icon>
+      <h4>{{ title }}</h4>
+    </div>
+    <div class="persons">
+      <small *ngIf="profileIds.length === 0">You have no {{ title }}</small>
+      <div class="ff" *ngFor="let id of profileIds">
+        <app-profile-block [profileId]="id" [routerLink]="['/profile/' + (collection === 'institutions' ? 'institution/' : 'person/') + id]" (click)="close()"></app-profile-block>
+        <!-- <span (click)="follow()" [hidden]="profile.following.includes(id)">
+          <small>Follow back</small>
+        </span>
+        <span class="un" (click)="unfollow()" [hidden]="!profile.following.includes(id)">
+          <small>Unfollow</small>
+        </span> -->
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,73 @@
+
+<div class="heady">
+  <ion-icon name="close" (click)="close()"></ion-icon>
+  <h4>Add an Event</h4>
+</div>
+<ion-content class="padded">
+  <div class="mod-wrap">
+
+    <div class="wrap">
+      <div class="in-wrap">
+        <p>Event Title  <i>👋 Reqiured</i></p>
+        <ion-input type="text" name="title" [(ngModel)]="iEvent.title"></ion-input>
+      </div>
+      <div class="in-wrap">
+        <p>Description <i>👋 {{iEvent.description ? iEvent.description.length : 0}}/150</i></p>
+        <ion-textarea name="brief" [(ngModel)]="iEvent.description" autoGrow maxlength="150"></ion-textarea>
+      </div>
+      <div class="in-wrap" id="open-date-input">
+        <p>start date</p>
+        <ion-input type="text" name="start" [value]="iEvent.startDate ? (iEvent.startDate | date:'MMMM d, y') + ' at ' + (iEvent.startDate | date:'h:mm a z') : ''" readonly></ion-input>
+        <ion-modal trigger="open-date-input">
+          <ng-template>
+            <ion-content>
+              <ion-datetime #popoverDatetime (ionChange)="iEvent.startDate = popoverDatetime.value" presentation="date-time"></ion-datetime>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+      </div>
+      <div class="in-wrap" id="open-date-input-2">
+        <p>end date</p>
+        <ion-input type="text" name="end"  [value]="iEvent.endDate ? (iEvent.endDate | date:'MMMM d, y') + ' at ' + (iEvent.endDate | date:'h:mm a z') : ''" readonly></ion-input>
+        <ion-modal trigger="open-date-input-2">
+          <ng-template>
+            <ion-content>
+              <ion-datetime #popoverDatetime2 (ionChange)="iEvent.endDate = popoverDatetime2.value" presentation="date-time"></ion-datetime>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+      </div>
+      <div class="in-wrap">
+        <p>Event Type</p>
+        <ion-select name="eType" [(ngModel)]="iEvent.type">
+          <ion-select-option value="physical">Physical</ion-select-option>
+          <ion-select-option value="virtual">Virtual</ion-select-option>
+          <ion-select-option value="both">Both</ion-select-option>
+        </ion-select>
+      </div>
+      <div class="in-wrap" [hidden]="iEvent.type === 'virtual'">
+        <p>Venue  <i>👋 Name or address of physical location where event is held</i></p>
+        <ion-input type="text" name="ploc" [(ngModel)]="iEvent.physicalDetails.name"></ion-input>
+      </div>
+      <div class="in-wrap" [hidden]="iEvent.type === 'virtual'">
+        <p>Venue Link  <i>👋 Link of map direction to venue</i></p>
+        <ion-input type="text" name="plink" [(ngModel)]="iEvent.physicalDetails.mapLink"></ion-input>
+      </div>
+      <div class="in-wrap" [hidden]="iEvent.type === 'physical'">
+        <p>Virtual Platform</p>
+        <ion-input type="text" name="ploc" [(ngModel)]="iEvent.virtualDetails.platform"></ion-input>
+      </div>
+      <div class="in-wrap" [hidden]="iEvent.type === 'physical'">
+        <p>Virtual Link</p>
+        <ion-input type="text" name="plink" [(ngModel)]="iEvent.virtualDetails.link"></ion-input>
+      </div>
+
+    </div>
+
+    <div class="foot">
+      <!-- <ion-button fill="clear" (click)="deleteEducation()" *ngIf="edIndex >= 0">remove education</ion-button> -->
+      <ion-button class="sv" (click)="createEvent()">Create Event</ion-button>
+    </div>
+  </div>
+
+</ion-content>

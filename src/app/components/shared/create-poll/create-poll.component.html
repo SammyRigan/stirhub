@@ -1,0 +1,33 @@
+<div class="wrap">
+  <div class="hl">
+    <ion-icon name="close" (click)="close()"></ion-icon>
+    <h4>Add Poll</h4>
+  </div>
+  <div class="f-wrap">
+    <div class="in-wrap">
+      <p>Question  <i>👋 Reqiured</i></p>
+      <ion-input name="ques" [(ngModel)]="poll.question"></ion-input>
+    </div>
+    <div class="choices">
+      <div class="in-wrap" *ngFor="let opt of poll.options">
+        <p>Option {{ poll.options.indexOf(opt) + 1 }}</p>
+        <ion-input name="pop" [(ngModel)]="opt.value"></ion-input>
+        <!-- <ion-button class="icon" (click)="addOption()"><ion-icon name="checkmark"></ion-icon></ion-button> -->
+      </div>
+      <div class="ch">
+        <div class="in-wrap">
+          <p>Option</p>
+          <ion-input name="op" [(ngModel)]="option.value"></ion-input>
+        </div>
+        <ion-button class="nopads" (click)="addOption()"><ion-icon name="checkmark"></ion-icon></ion-button>
+      </div>
+      <span class="duration" (click)="openPicker()">
+        <small [hidden]="poll.duration.length > 0">Set Duration</small>
+        <small [hidden]="!poll.duration[0]">{{poll.duration[0]}} days</small>
+        <small [hidden]="!poll.duration[1]">{{poll.duration[1]}} hours</small>
+        <small [hidden]="!poll.duration[2]">{{poll.duration[2]}} minutes</small>
+      </span>
+    </div>
+    <ion-button (click)="addPoll()" style="height: 50px;">add poll</ion-button>
+  </div>
+</div>

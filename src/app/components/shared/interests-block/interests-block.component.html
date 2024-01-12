@@ -1,0 +1,8 @@
+<div class="interests">
+  <div class="hl">
+    <h4>Interests</h4>
+    <ion-icon name="add-outline" (click)="editInterests()" *ngIf="add"></ion-icon>
+  </div>
+  <small *ngIf="!profile?.interests || profile?.interests.length === 0">You have not selected any interests yet</small>
+  <ion-button *ngFor="let int of profile?.interests">{{ int }}</ion-button>
+</div>

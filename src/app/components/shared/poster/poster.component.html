@@ -1,0 +1,73 @@
+<div class="p-head">
+  <ion-icon name="close-outline" (click)="close()"></ion-icon>
+  <ion-button (click)="addPost()" [disabled]="!newPost.text?.trim() && !tempVidUrl && tempUri.length === 0">post</ion-button>
+</div>
+<div class="vate">
+  <div class="msg-p" *ngIf="timePost">
+    <ion-avatar><ion-img [hidden]="!postOwner?.imgUrl" [src]="postOwner?.imgUrl ? postOwner.imgUrl : 'assets/img/man.png'"></ion-img></ion-avatar>
+    <div class="p-stuff">
+      <h4>{{ postOwner.displayName }}</h4>
+      <p>{{ timePost?.text }}</p>
+      <p *ngIf="timePost.imgUrls?.length > 0"><a *ngFor="let link of timePost.imgUrls" [href]="link" target="_blank">pic.stein.com/image{{ timePost.imgUrls.indexOf(link) }}</a></p>
+      <p *ngIf="timePost.videoUrl"><a [href]="timePost.videoUrl" target="_blank">vid.stein.com/video</a></p>
+      <small>posted {{ timePost.date | dateFrom:timePost.date }}</small>
+    </div>
+  </div>
+  <div class="top">
+    <ion-avatar><ion-img [hidden]="!poster.imgUrl" [src]="poster.imgUrl ? poster.imgUrl : 'assets/img/user.png'"></ion-img></ion-avatar>
+    <div class="aft">
+      <div class="in-wrap">
+        <ion-textarea autoGrow spellcheck rows="1" type="text" name="mind" [placeholder]="timePost ? 'Type your reply...' : 'What\'s on your mind?'" spellcheck [(ngModel)]="newPost.text"></ion-textarea>
+      </div>
+      <div class="im-w" [ngClass]="{'mo': tempUri.length > 1}" *ngIf="tempUri.length === 1">
+        <div class="d-w" *ngFor="let img of tempUri">
+          <span (click)="removeImg(img)"><ion-icon name="close-outline"></ion-icon></span>
+          <ion-img [src]="img"></ion-img>
+        </div>
+      </div>
+      <div class="im-w mo" [ngClass]="{'ko': tempUri.length === 3}" [hidden]="tempUri.length === 0" *ngIf="tempUri.length > 1">
+        <div class="d-w" *ngFor="let img of tempUri" [ngStyle]="{'background-image': 'url(' + img + ')'}">
+          <span (click)="removeImg(img)"><ion-icon name="close-outline"></ion-icon></span>
+          <!-- <img [src]="img"> -->
+        </div>
+      </div>
+      <div class="im-w" [hidden]="!tempVidUrl">
+        <span (click)="tempVidUrl = null; postVid = null"><ion-icon name="close-outline"></ion-icon></span>
+        <video controls playsinline *ngIf="tempVidUrl" #postVideo>
+          <source [src]="tempVidUrl" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="bt-wo">
+        <div class="outs">
+          <input type="file" accept=".png, .jpg, .jpeg" #image (change)="readFile($event)" hidden>
+          <input type="file" accept=".mp4" #video (change)="readVid($event)" hidden>
+          <span (click)="(tempVidUrl || tempUri.length > 0) ? null : video.click()" [ngClass]="{'inact': (tempVidUrl || tempUri.length > 0)}">
+            <ion-icon name="logo-youtube" style="color: #3f82d9;"></ion-icon>
+            <small>video</small>
+          </span>
+          <span (click)="(tempUri.length === 4 || tempVidUrl) ? null : image.click();" [ngClass]="{'inact': (tempUri.length === 4 || tempVidUrl)}">
+            <ion-icon name="image" style="color: #e34534;"></ion-icon>
+            <small>photo</small>
+          </span>
+          <span (click)="addPoll()" [hidden]="postOwner">
+            <ion-icon name="list" style="color: #ceb423;"></ion-icon>
+            <small>Polls</small>
+          </span>
+          <!-- <span *ngIf="!timePost" (click)="research()">
+            <ion-icon name="folder"></ion-icon>
+            <small>publish</small>
+          </span> -->
+          <!-- <span *ngIf="!timePost" (click)="research()">
+            <ion-icon name="briefcase"></ion-icon>
+            <small>job</small>
+          </span> -->
+        </div>
+        <ion-button (click)="addPost()" [disabled]="!newPost.text?.trim() && !tempVidUrl && tempUri.length === 0">post</ion-button>
+      </div>
+    </div>
+  </div>
+  <div class="p-ov" *ngIf="posting">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+</div>

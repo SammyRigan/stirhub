@@ -1,0 +1,136 @@
+<div class="item pal" [routerLink]="['/single-post/' + timePost.id]" [ngStyle]="{'background-color': timePost.announcement ? timePost.color : ''}" [ngClass]="{'ann-c': timePost.announcement}">
+
+  <div class="use" *ngIf="timePost?.repliedTo">
+    <div class="pen" (click)="$event.stopPropagation()">
+      <ion-avatar [routerLink]="['/profile/' + (secItem?.name ? 'institution' : 'individual') + '/' + secItem?._id]"><ion-img [src]="secItem?.profileImgUrl ? secItem.profileImgUrl : ''" [hidden]="!secItem?.profileImgUrl"></ion-img></ion-avatar>
+      <div class="txt">
+        <h4 *ngIf="secItem" [routerLink]="['/profile/' + (secItem?.name ? 'institution' : 'individual') + '/' + secItem?._id]">{{ secItem?.name ? secItem?.name : secItem?.firstname + ' ' + secItem?.lastname }}</h4>
+        <h4 [hidden]="secItem" class="non"></h4>
+        <small>{{ secItem?.username ? '@' : '' }}{{ secItem?.username }} {{ secItem?.username ? '&#183;' : '' }} {{ secItem?.knownFor }} <i>	{{ secItem?.knownFor ? '&#183;' : '' }} {{ mainPost?.date | dateFrom:mainPost?.date }}</i></small>
+      </div>
+    </div>
+    <div class="p-more" ngbDropdown (click)="$event.stopPropagation()" [hidden]="mainPost?.announcement">
+      <ion-icon name="ellipsis-horizontal" id="dropdownBasic1" ngbDropdownToggle></ion-icon>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button ngbDropdownItem *ngIf="profile?._id !== mainPost?.profileId && !profile?.following?.includes(mainPost?.profileId) && (!this.profile?.name && !this.secItem?.name || this.profile?.name && this.secItem?.name)" (click)="follow(secItem)">Follow</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== mainPost?.profileId && profile?.following?.includes(mainPost?.profileId) && (!this.profile?.name && !this.secItem?.name || this.profile?.name && this.secItem?.name)" (click)="unfollow(secItem)">Unfollow</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== mainPost?.profileId && !profile?.liked?.includes(mainPost?.profileId) && (!this.profile?.name && this.secItem?.name)" (click)="instlike(true, secItem)">Like</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== mainPost?.profileId && profile?.liked?.includes(mainPost?.profileId) && (!this.profile?.name && this.secItem?.name)" (click)="instlike(false, secItem)">Unlike</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== mainPost?.profileId && !profile?.observing?.includes(mainPost?.profileId) && (this.profile?.name && !this.secItem?.name)" (click)="observe(true, secItem)">Observe</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== mainPost?.profileId && (this.profile?.name && !this.secItem?.name) && profile?.observing?.includes(mainPost?.profileId)" (click)="observe(false, secItem)">Disregard</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== mainPost?.profileId" [routerLink]="['/profile/' + (mainPost?.institution ? 'institution/' : 'user-profile/') + mainPost?.profileId]" routerLinkActive="router-link-active" >View Profile</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== mainPost?.profileId" (click)="reportPost(mainPost)">Report Post</button>
+        <button ngbDropdownItem *ngIf="profile?._id === mainPost?.profileId" (click)="deletePost(mainPost)">Delete</button>
+      </div>
+    </div>
+    <ion-icon class="an-icon" name="megaphone" [hidden]="!mainPost?.announcement"></ion-icon>
+  </div>
+
+  <div class="ctn mny" *ngIf="timePost?.repliedTo">
+    <p>{{ mainPost?.text }}</p>
+    <div class="im-w" [ngClass]="{'mo': mainPost?.imgUrls.length > 1}" *ngIf="mainPost?.imgUrls.length === 1">
+      <div class="d-w" *ngFor="let img of mainPost?.imgUrls" (click)="$event.stopPropagation(); viewMedia(mainPost?.imgUrls.indexOf(img))">
+        <ion-img [src]="img"></ion-img>
+      </div>
+    </div>
+    <div class="im-w mo" [ngClass]="{'ko': mainPost?.imgUrls.length === 3}" [hidden]="mainPost?.imgUrls.length === 0" *ngIf="mainPost?.imgUrls.length > 1">
+      <div class="d-w" *ngFor="let img of mainPost?.imgUrls" [ngStyle]="{'background-image': 'url(' + img + ')'}" (click)="$event.stopPropagation(); viewMedia(mainPost?.imgUrls.indexOf(img))">
+        <!-- <img [src]="img"> -->
+      </div>
+    </div>
+    <div class="im-w" [hidden]="!mainPost?.videoUrl" (click)="$event.stopPropagation()">
+      <video controls playsinline *ngIf="mainPost?.videoUrl" #postVideo>
+        <source [src]="mainPost?.videoUrl" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div class="polls" *ngIf="mainPost?.pollId">
+      <div class="options" *ngIf="profile._id === mainPost?.profileId || voted">
+        <span class="opt" *ngFor="let opt of poll?.options">
+          <div class="opt-v" [ngStyle]="{'width': (opt.amount ? opt.amount / poll?.responses.length * 100 : 0) + '%'}"></div>
+          <small>{{ opt.value }} <ion-icon name="checkmark-circle-outline" *ngIf="voted && voted.optionIndex === opt.index"></ion-icon></small>
+          <small>{{ opt.amount ? returnWhole(opt.amount / poll?.responses.length * 100) : 0 }}%</small>
+        </span>
+      </div>
+      <div class="options" *ngIf="profile?._id !== mainPost?.profileId && !voted">
+        <ion-button class="nopads" *ngFor="let opt of poll?.options" (click)="$event.stopPropagation(); vote(opt)">{{ opt.value }}</ion-button>
+      </div>
+      <small class="ps">{{ poll?.responses.length }} votes &#183; {{ poll?.closed ? 'Final results' : 'ends ' + (due | dateFrom:due) }}</small>
+    </div>
+
+    <br>
+  </div>
+
+  <div class="use">
+    <div class="pen" (click)="$event.stopPropagation()">
+      <ion-avatar [routerLink]="['/profile/' + (item?.name ? 'institution' : 'individual') + '/' + item?._id]"><ion-img [src]="item?.profileImgUrl ? item.profileImgUrl : ''" [hidden]="!item?.profileImgUrl"></ion-img></ion-avatar>
+      <div class="txt">
+        <h4 [ngClass]="{'non': !displayName}" [routerLink]="['/profile/' + (item?.name ? 'institution' : 'individual') + '/' + item?._id]">{{ displayName }}</h4>
+        <small>{{ item?.username ? '@' : '' }}{{ item?.username }} {{ item?.username ? '&#183;' : '' }} {{ item?.knownFor }} <i>	{{ item?.knownFor ? '&#183;' : '' }} {{ timePost.date | dateFrom:timePost.date }}</i></small>
+      </div>
+    </div>
+    <div class="p-more" ngbDropdown (click)="$event.stopPropagation()" [hidden]="timePost.announcement">
+      <ion-icon name="ellipsis-horizontal" id="dropdownBasic1" ngbDropdownToggle></ion-icon>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId && !profile?.following?.includes(timePost?.profileId) && (!this.profile?.name && !this.item?.name || this.profile?.name && this.item?.name)" (click)="follow(item)">Follow</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId && profile?.following?.includes(timePost?.profileId) && (!this.profile?.name && !this.item?.name || this.profile?.name && this.item?.name)" (click)="unfollow(item)">Unfollow</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId && !profile?.liked?.includes(timePost?.profileId) && (!this.profile?.name && this.item?.name)" (click)="instlike(true, item)">Like</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId && profile?.liked?.includes(timePost?.profileId) && (!this.profile?.name && this.item?.name)" (click)="instlike(false, item)">Unlike</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId && !profile?.observing?.includes(timePost?.profileId) && (this.profile?.name && !this.item?.name)" (click)="observe(true, item)">Observe</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId && (this.profile?.name && !this.item?.name) && profile?.observing?.includes(timePost?.profileId)" (click)="observe(false, item)">Disregard</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId" [routerLink]="['/profile/' + (timePost?.institution ? 'institution/' : 'user-profile/') + timePost?.profileId]" routerLinkActive="router-link-active" >View Profile</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId" (click)="reportPost(timePost)">Report Post</button>
+        <button ngbDropdownItem *ngIf="profile?._id === timePost?.profileId" (click)="deletePost(timePost)">Delete</button>
+      </div>
+    </div>
+    <ion-icon class="an-icon" name="megaphone" [hidden]="!timePost.announcement"></ion-icon>
+  </div>
+  <div class="ctn">
+    <p>{{ timePost.text }}</p>
+    <div class="im-w" [ngClass]="{'mo': timePost.imgUrls.length > 1}" *ngIf="timePost.imgUrls.length === 1">
+      <div class="d-w" *ngFor="let img of timePost.imgUrls" (click)="$event.stopPropagation(); viewMedia(timePost.imgUrls.indexOf(img))">
+        <ion-img [src]="img"></ion-img>
+      </div>
+    </div>
+    <div class="im-w mo" [ngClass]="{'ko': timePost.imgUrls.length === 3}" [hidden]="timePost.imgUrls.length === 0" *ngIf="timePost.imgUrls.length > 1">
+      <div class="d-w" *ngFor="let img of timePost.imgUrls" [ngStyle]="{'background-image': 'url(' + img + ')'}" (click)="$event.stopPropagation(); viewMedia(timePost.imgUrls.indexOf(img))">
+        <!-- <img [src]="img"> -->
+      </div>
+    </div>
+    <div class="im-w" [hidden]="!timePost.videoUrl" (click)="$event.stopPropagation()">
+      <video controls playsinline *ngIf="timePost.videoUrl" #postVideo>
+        <source [src]="timePost.videoUrl" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div class="polls" *ngIf="timePost.pollId">
+      <div class="options" *ngIf="profile._id === timePost.profileId || voted">
+        <span class="opt" *ngFor="let opt of poll?.options">
+          <div class="opt-v" [ngStyle]="{'width': (opt.amount ? opt.amount / poll?.responses.length * 100 : 0) + '%'}"></div>
+          <small>{{ opt.value }} <ion-icon name="checkmark-circle-outline" *ngIf="voted && voted.optionIndex === opt.index"></ion-icon></small>
+          <small>{{ opt.amount ? returnWhole(opt.amount / poll?.responses.length * 100) : 0 }}%</small>
+        </span>
+      </div>
+      <div class="options" *ngIf="profile?._id !== timePost.profileId && !voted">
+        <ion-button class="nopads" *ngFor="let opt of poll?.options" (click)="$event.stopPropagation(); vote(opt)">{{ opt.value }}</ion-button>
+      </div>
+      <small class="ps">{{ poll?.responses.length }} votes &#183; {{ poll?.closed ? 'Final results' : 'ends ' + (due | dateFrom:due) }}</small>
+    </div>
+  </div>
+  <div class="actions" [hidden]="timePost.announcement">
+    <span [ngClass]="{'act': isLiked}" (click)="$event.stopPropagation(); like()">
+      <ion-icon name="heart"></ion-icon>
+      <small>{{ isLiked ? 'liked' : 'like' }}</small>
+      <i>{{ timePost.likes }}</i>
+    </span>
+    <span (click)="$event.stopPropagation(); comment()">
+      <ion-icon name="chatbox-ellipses"></ion-icon>
+      <small>comment</small>
+      <i>{{ timePost.comments }}</i>
+    </span>
+    <span (click)="$event.stopPropagation(); copyLink()">
+      <ion-icon name="copy"></ion-icon>
+      <small>copy</small>
+    </span>
+  </div>
+</div>

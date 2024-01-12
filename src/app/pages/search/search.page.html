@@ -1,0 +1,196 @@
+
+<ion-content class="core">
+  <app-header [profile]="profile" [active]="'search'"></app-header>
+
+  <div class="noner" [hidden]="!isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div class="main" *ngIf="!isLoading">
+
+    <div class="lt">
+      <app-profile-tile [profile]="profile"></app-profile-tile>
+
+      <app-interests-block [profile]="profile"></app-interests-block>
+
+      <app-community-block></app-community-block>
+
+    </div>
+
+    <div class="ml">
+      <div class="banner pal" style="background-image: url(assets/img/find.jpeg);">
+        <div class="b-ov">
+          <div class="search pal">
+            <ion-input placeholder="Type something here.." clearInput [(ngModel)]="query" (ionChange)="search()"></ion-input>
+          </div>
+        </div>
+      </div>
+
+      <div class="recents" [hidden]="query">
+
+
+        <div class="latest">
+          <div class="hl">
+            <h4>Events for you</h4>
+          </div>
+          <div class="ta-ep lox">
+            <div class="ev-i" *ngFor="let event of iEvents">
+              <span class="img">
+                <span class="i-w">
+                  <h2>{{ event.startDate | date:'dd' }}</h2>
+                  <small>{{ event.startDate | date:'MMM' }}</small>
+                </span>
+              </span>
+              <span class="txt">
+                <p>{{ event.title }}</p>
+                <small>{{ event.description }}</small>
+                <div class="ev-act">
+                  <small *ngIf="event.physicalDetails.name"><ion-icon name="pin"></ion-icon><a [href]="event.physicalDetails.mapLink" target="_blank">{{ event.physicalDetails.name }}</a></small>
+                  <small *ngIf="event.virtualDetails.platform"><ion-icon name="earth"></ion-icon><a [href]="event.virtualDetails.link" target="_blank">{{ event.virtualDetails.platform }}</a></small>
+                  <small *ngIf="(event.startDate | date:'dd, MMM') === (event.endDate | date:'dd, MMM')"><ion-icon name="time"></ion-icon>{{ event.startDate | date:'h:mm a z' }} to {{ event.endDate | date:'h:mm a z' }}</small>
+                  <small *ngIf="(event.startDate | date:'dd, MMM') !== (event.endDate | date:'dd, MMM')"><ion-icon name="time"></ion-icon>{{ event.startDate | date:'MMMM d, y' }} to {{ event.endDate | date:'MMMM d, y' }}</small>
+                </div>
+              </span>
+              <span class="icon">
+                <ion-icon name="bookmark-outline"></ion-icon>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="latest">
+          <div class="hl">
+            <h4>Notices</h4>
+          </div>
+          <div class="ta-ep poq">
+            <app-post-card [timePost]="post" [profile]="profile" *ngFor="let post of announcements" (deleted)="deletePost(post.id)"></app-post-card>
+          </div>
+        </div>
+
+        <div class="latest">
+          <div class="hl">
+            <h4>Recommended Communities</h4>
+          </div>
+          <div class="comms" *ngFor="let item of communities" [routerLink]="['/community/' + item._id]">
+            <ion-avatar><ion-img [src]="item.featuredImgUrl ? item.featuredImgUrl : ''"></ion-img></ion-avatar>
+            <span class="txt">
+              <p>{{ item.name }}</p>
+              <small>3 members</small>
+            </span>
+          </div>
+        </div>
+
+        <div class="latest">
+          <div class="hl"><h4>Research works</h4></div>
+          <div class="very">
+            <div class="pub-c pal" *ngFor="let pub of researches" [routerLink]="['/single-research/' + pub._id]">
+              <div class="p-img" [ngStyle]="{'background-image': 'url(' + pub.imageUrl + ')'}"></div>
+              <div class="p-txt">
+                <h4>{{ pub.title }}</h4>
+                <small hidden>{{ pub.brief.slice(0, 300) }}</small>
+                <div class="ans" hidden>
+                  <span><ion-icon name="calendar-outline"></ion-icon> {{pub.date | date:'mediumDate'}}</span>
+                  <span *ngIf="pub.fileUrl"><ion-icon name="arrow-down-outline"></ion-icon> File attached</span>
+                </div>
+                <div class="rigan">
+                  <small>{{pub.date | dateFrom:pub.date }}</small>
+                  <ion-icon name="bookmark-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="latest">
+          <div class="hl">
+            <h4>People</h4>
+            <span><small [routerLink]="['/users/individual']">view all</small></span>
+          </div>
+          <div class="very">
+            <div class="p-tile pal" *ngFor="let person of people" [routerLink]="['/profile/individual/' + person._id]">
+              <div class="bann" [ngStyle]="{'background-image': 'url(' + person.bannerUrl + ')'}"></div>
+              <div class="person">
+                <ion-avatar><ion-img [src]="person.profileImgUrl" [hidden]="!person.profileImgUrl"></ion-img></ion-avatar>
+                <span>
+                  <h4>{{ person.firstname + ' ' + person.lastname }}</h4>
+                  <small>{{ person.email }}</small>
+                  <p>{{ person.knownFor }}</p>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="latest">
+          <div class="hl">
+            <h4>Institutions & Entities</h4>
+            <span><small [routerLink]="['/users/institution']">view all</small></span>
+          </div>
+          <div class="very">
+            <div class="p-tile pal" *ngFor="let person of institutions" [routerLink]="['/profile/individual/' + person._id]">
+              <div class="bann" [ngStyle]="{'background-image': 'url(' + person.bannerUrl + ')'}"></div>
+              <div class="person">
+                <ion-avatar><ion-img [src]="person.profileImgUrl" [hidden]="!person.profileImgUrl"></ion-img></ion-avatar>
+                <span>
+                  <h4>{{ person.name }}</h4>
+                  <small>{{ person.email }}</small>
+                  <p>{{ person.knownFor }}</p>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-res" [hidden]="!query">
+        <div class="hl">
+          <h4>Search results</h4>
+          <small>{{ peopleRes.length + institutionsRes.length + researchesRes.length + publicationsRes.length }} total</small>
+        </div>
+        <ion-spinner name="crescent" [hidden]="!searching"></ion-spinner>
+        <div class="res-wrap" [hidden]="searching">
+          <div class="ppl pal" *ngFor="let person of peopleRes" [routerLink]="['/profile/user-profile/' + person.objectID]">
+            <ion-avatar><ion-img [src]="person.imgUrl" [hidden]="!person.imgUrl"></ion-img></ion-avatar>
+            <span>
+              <h4>{{ person.firstname + ' ' + person.lastname }}</h4>
+              <small>{{ person.type }}</small>
+            </span>
+            <p>people</p>
+          </div>
+          <div class="ppl pal" *ngFor="let inst of institutionsRes" [routerLink]="['/profile/institution/' + inst.objectID]">
+            <ion-avatar><ion-img [src]="inst.imgUrl" [hidden]="!inst.imgUrl"></ion-img></ion-avatar>
+            <span>
+              <h4>{{ inst.name }}</h4>
+              <small>{{ inst.type }}</small>
+            </span>
+            <p>institutions</p>
+          </div>
+          <div class="ppl pal" *ngFor="let inst of researchesRes" [routerLink]="['/single-research/' + inst.objectID]">
+            <ion-avatar><ion-img [src]="inst.imageUrl" [hidden]="!inst.imageUrl"></ion-img></ion-avatar>
+            <span>
+              <h4>{{ inst.title }}</h4>
+              <small>{{ inst.date | date:'mediumDate' }}</small>
+            </span>
+            <p>research</p>
+          </div>
+          <div class="ppl pal" *ngFor="let inst of publicationsRes" [routerLink]="['/single-publication/' + inst.objectID]">
+            <ion-avatar><ion-img [src]="inst.imageUrl" [hidden]="!inst.imageUrl"></ion-img></ion-avatar>
+            <span>
+              <h4>{{ inst.title }}</h4>
+              <small>{{ inst.date | date:'mediumDate' }}</small>
+            </span>
+            <p>publications</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rt">
+      <!-- <app-event-block></app-event-block> -->
+      <app-suggestion-widget [profile]="profile"></app-suggestion-widget>
+    </div>
+  </div>
+
+
+  <app-tabs [active]="'search'"></app-tabs>
+</ion-content>

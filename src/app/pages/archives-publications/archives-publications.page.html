@@ -1,0 +1,33 @@
+<ion-content class="core">
+  <app-header [profile]="profile"></app-header>
+  <div class="noner" [hidden]="!isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+  <div class="main" *ngIf="!isLoading">
+    <div class="lt">
+      <div class="ta-ep">
+        <div class="pub-c pal" *ngFor="let pub of publications" [routerLink]="['/single-publication/' + pub.id]">
+          <div class="p-img" [ngStyle]="{'background-image': 'url(' + pub.imageUrl + ')'}"></div>
+          <div class="p-txt">
+            <h4>{{ pub.title }}</h4>
+            <small>{{ pub.brief.slice(0, 300) }}</small>
+            <div class="ans">
+              <span><ion-icon name="calendar-outline"></ion-icon> {{pub.date | date:'mediumDate'}}</span>
+              <span *ngIf="pub.fileUrl"><ion-icon name="arrow-down-outline"></ion-icon> File attached</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rt">
+      <app-suggestion-widget [profile]="profile"></app-suggestion-widget>
+      <ion-button class="ptw" (click)="makePost()">make post</ion-button>
+    </div>
+  </div>
+</ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="makePost()">
+    <ion-icon name="pencil-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

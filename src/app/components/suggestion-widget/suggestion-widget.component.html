@@ -1,0 +1,39 @@
+<div class="iii" *ngIf="!profile.name">
+  <div class="sug pal">
+    <h4>People to follow</h4>
+    <app-suggestion-block *ngFor="let pers of suggestions | slice:0:3" [profile]="pers" [currentProfile]="profile"></app-suggestion-block>
+    <ion-button (click)="viewAll('people')">veiw all</ion-button>
+    <!-- <span class="more" (click)="viewAll('people')">
+      <small>View all</small>
+      <ion-icon name="arrow-forward"></ion-icon>
+    </span> -->
+  </div>
+  <div class="sug pal">
+    <h4>Suggested institutions</h4>
+    <app-suggestion-block *ngFor="let pers of instSuggestions | slice:0:3" [institution]="pers" [currentProfile]="profile"></app-suggestion-block>
+    <ion-button (click)="viewAll('institutions')">veiw all</ion-button>
+    <!-- <span class="more" (click)="viewAll('institutions')">
+      <small>View all</small>
+      <ion-icon name="arrow-forward"></ion-icon>
+    </span> -->
+  </div>
+</div>
+
+<div class="iii" *ngIf="profile?.name">
+  <div class="sug pal">
+    <h4>People to observe</h4>
+    <app-suggestion-block *ngFor="let pers of suggestions | slice:0:3" [profile]="pers" [currentProfile]="profile"></app-suggestion-block>
+    <span class="more" (click)="viewAll('people')">
+      <small>View all</small>
+      <ion-icon name="arrow-forward"></ion-icon>
+    </span>
+  </div>
+  <div class="sug pal">
+    <h4>Suggested institutions</h4>
+    <app-suggestion-block *ngFor="let pers of instSuggestions | slice:0:3" [institution]="pers" [currentProfile]="profile"></app-suggestion-block>
+    <span class="more" (click)="viewAll('institutions')">
+      <small>View all</small>
+      <ion-icon name="arrow-forward"></ion-icon>
+    </span>
+  </div>
+</div>

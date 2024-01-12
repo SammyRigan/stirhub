@@ -1,0 +1,94 @@
+<ion-content class="core">
+  <app-header [profile]="profile"></app-header>
+
+  <div class="noner" [hidden]="!isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div class="main" *ngIf="!isLoading">
+    <div class="lt">
+      <div class="pro pal">
+        <div class="p-wrap" *ngIf="author">
+          <ion-avatar [routerLink]="['/profile/person/' + author?.id]"><ion-img [src]="author?.imgUrl ? author.imgUrl : ''" [hidden]="!author?.imgUrl"></ion-img></ion-avatar>
+          <h4 [routerLink]="['/profile/person/' + author?.id]">{{ author?.firstname + ' ' + author?.lastname }}</h4>
+          <small>{{ author?.type }}</small>
+        </div>
+        <div class="p-wrap" *ngIf="!author">
+          <ion-avatar><ion-img [src]="publication?.author.imageUrl ? publication.author.imageUrl : ''" [hidden]="!publication?.author.imageUrl"></ion-img></ion-avatar>
+          <h4>{{ publication?.author.fullName }}</h4>
+          <!-- <small>{{ author?.type }}</small> -->
+        </div>
+      </div>
+
+      <ion-button class="ptw" (click)="research()">publish</ion-button>
+
+      <div class="footer">
+        <a [routerLink]="['/timeline']">Home</a>
+        <a href="https://stein.com.gh/about">About</a>
+        <a [routerLink]="['/messages']">Messages</a>
+        <a [routerLink]="['/archives']">Research</a>
+        <a [routerLink]="['/archives-publications']">Publications</a>
+        <a href="https://stein.com.gh/">Info Portal</a>
+        <div class="f-bur">
+          <ion-img src="assets/icon/logo.png"></ion-img>
+          <!-- <small>@Copyright {{year}} — Powered by <b><a href="https://heritorslabs.com" target="_blank">HL</a></b></small> -->
+        </div>
+      </div>
+
+      <div class="explore pal" *ngIf="false">
+        <h4>Explore</h4>
+        <div class="tags">
+          <span>data analysis</span>
+          <span>software engineering</span>
+          <span>teaching</span>
+          <span>gold</span>
+          <span>civil engineering</span>
+          <span>publication analysis</span>
+          <span>field publication</span>
+          <span>mining</span>
+          <span>oil & gas publication</span>
+          <span>statistical review</span>
+          <span>projects</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ml">
+      <div class="res pal">
+        <div class="r-img" [ngStyle]="{'background-image': 'url(' + publication?.imageUrl + ')'}"></div>
+        <div class="res-i">
+          <h4>{{ publication?.title }}</h4>
+          <span class="dte"><ion-icon name="calendar-outline"></ion-icon> {{publication?.date | date:'mediumDate'}}</span>
+          <p>{{ publication?.brief }}</p>
+        </div>
+      </div>
+      <ion-button class="dwn pal" type="link" [href]="publication?.fileUrl" target="_blank">download file</ion-button>
+      <div class="team pal" *ngIf="publication?.contributors.length > 0">
+        <h4>Contributors</h4>
+        <div class="te-w">
+          <div class="mem" *ngFor="let mem of publication?.contributors">
+            <ion-avatar><ion-img [src]="mem.imageUrl ? mem.imageUrl : ''" [hidden]="!mem.imageUrl"></ion-img></ion-avatar>
+            <p>{{ mem.fullName }}</p>
+            <small>{{ mem.title }}</small>
+          </div>
+        </div>
+      </div>
+      <div class="team pal" *ngIf="publication?.sponsors.length > 0">
+        <h4>Sponsors</h4>
+        <div class="te-w">
+          <div class="mem" *ngFor="let mem of publication?.sponsors">
+            <ion-avatar><ion-img [src]="mem.imgUrl ? mem.imgUrl : ''" [hidden]="!mem.imgUrl"></ion-img></ion-avatar>
+            <p>{{ mem.name }}</p>
+            <small>{{ mem.title }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rt">
+      <app-suggestion-widget [profile]="profile"></app-suggestion-widget>
+
+    </div>
+  </div>
+
+</ion-content>

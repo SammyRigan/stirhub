@@ -1,0 +1,22 @@
+<ion-content class="core">
+  <div class="wrap">
+    <div class="hd">
+      <ion-icon name="close" (click)="close()"></ion-icon>
+      <h4>{{ signed ? 'Sign Up' : 'Invitations Sent' }}</h4>
+    </div>
+    <div class="sent-wrap">
+      <div class="sent" *ngFor="let invite of invitations">
+        <div class="txt">
+          <p>{{ invite.email }}</p>
+          <small>{{ invite.date | dateFrom:invite.date }}</small>
+        </div>
+        <span class="bt" [hidden]="invite.onboard" (click)="sendInvite(invite.id, invite.email)">
+          <small>Resend</small>
+        </span>
+        <span class="bt un" [hidden]="!invite.onboard" [routerLink]="['/profile/individual/' + invite.inviteeId]" (click)="close()">
+          <small>View</small>
+        </span>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,147 @@
+$primary: #0C7C3F;
+$secondary: #A01C4E;
+$tetiary: #bbbbbb;
+$accent: #E5D326;
+
+.wrap {
+  background-color: #ffffff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom: none;
+  height: 500px;
+  position: relative;
+}
+
+.topp {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  cursor: pointer;
+
+  h4 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-left: 10px;
+  }
+
+  ion-icon {
+    margin: auto 10px;
+    font-size: 25px;
+    --ionicon-stroke-width: 40px;
+  }
+}
+
+.po {
+  display: flex;
+  align-items: center;
+
+  ion-icon {
+    margin-right: 10px;
+  }
+}
+
+.chatter {
+  border-top: solid 1.5px $primary;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background-color: #ffffff;
+}
+
+.sub {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-top: solid 1px #00000010;
+
+  ion-icon {
+    font-size: 18px;
+    margin-right: 10px;
+    --ionicon-stroke-width: 40px;
+    cursor: pointer;
+  }
+}
+
+ion-textarea {
+  --padding-start: 10px;
+  --padding-end: 10px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  font-size: 13px;
+}
+
+::ng-deep textarea {
+  min-height: 50px;
+}
+
+ion-button {
+  // --padding-start: 20px;
+  // --padding-end: 20px;
+  // --padding-top: 0px;
+  // --padding-bottom: 0px;
+  margin: auto 0 auto auto;
+  height: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  --border-radius: 20px;
+}
+
+.chats {
+  padding: 20px;
+  display: grid;
+  gap: 10px;
+  height: 440px;
+  padding-bottom: 120px;
+  overflow: scroll;
+}
+
+.mess {
+  display: flex;
+
+  ion-avatar {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
+
+  .d-m {
+    background-color: #00000010;
+    padding: 10px;
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+
+    p {
+      font-size: 13px;
+    }
+  }
+}
+
+.desc {
+  small {
+    font-size: 11px;
+    margin-top: 5px;
+  }
+}
+
+.mess.mine {
+  justify-content: flex-end;
+  ion-avatar {
+    display: none;
+  }
+
+  .d-m {
+    background-color: $primary;
+    color: #ffffff;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 0;
+  }
+}
+
+a#bottom {
+  display: block;
+  // height: 120px;
+}

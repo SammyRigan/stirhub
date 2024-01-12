@@ -1,0 +1,79 @@
+<ion-content class="core">
+  <app-header [profile]="profile"></app-header>
+
+  <div class="noner" [hidden]="!isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div class="main" *ngIf="!isLoading">
+    <div class="lt">
+      <app-profile-tile [profile]="profile"></app-profile-tile>
+
+      <app-interests-block [profile]="profile"></app-interests-block>
+
+      <app-community-block></app-community-block>
+
+      <div class="ad pal" hidden [ngStyle]="{'background-image': 'url(assets/img/la.jpg)'}"></div>
+
+      <div class="explore pal" hidden>
+        <h4>Explore</h4>
+        <div class="tags">
+          <span>data analysis</span>
+          <span>software engineering</span>
+          <span>teaching</span>
+          <span>gold</span>
+          <span>civil engineering</span>
+          <span>research analysis</span>
+          <span>field research</span>
+          <span>mining</span>
+          <span>oil & gas research</span>
+          <span>statistical review</span>
+          <span>projects</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ml">
+      <div class="r-img pal" [ngStyle]="{'background-image': 'url(' + research?.imageUrl + ')'}">
+        <app-go-back></app-go-back>
+      </div>
+      <div class="res pal">
+        <div class="res-i">
+          <span>
+            <h4>{{ research?.title }}</h4>
+            <ion-icon name="bookmark-outline"></ion-icon>
+          </span>
+          <small>{{ research?.date | date:'mediumDate' }} <i></i> {{ research?.date | dateFrom:research?.date }}</small>
+          <!-- <span class="dte"><ion-icon name="calendar-outline"></ion-icon> {{research?.date | date:'mediumDate'}}</span> -->
+          <p>{{ research?.brief }}</p>
+        </div>
+      </div>
+      <ion-button class="dwn pal" type="link" [href]="research?.fileUrl" target="_blank">download file</ion-button>
+      <div class="team pal" *ngIf="research?.team.length > 0">
+        <h4>Reseach Team</h4>
+        <div class="te-w">
+          <div class="mem" *ngFor="let mem of research?.team">
+            <!-- <ion-avatar><ion-img [src]="mem.imageUrl ? mem.imageUrl : ''" [hidden]="!mem.imageUrl"></ion-img></ion-avatar> -->
+            <p>{{ mem.fullName }}</p>
+            <small>{{ mem.title }}</small>
+          </div>
+        </div>
+      </div>
+      <div class="team pal" *ngIf="research?.sponsors.length > 0">
+        <h4>Reseach Sponsors</h4>
+        <div class="te-w">
+          <div class="mem" *ngFor="let mem of research?.sponsors">
+            <!-- <ion-avatar><ion-img [src]="mem.imgUrl ? mem.imgUrl : ''" [hidden]="!mem.imgUrl"></ion-img></ion-avatar> -->
+            <p>{{ mem.name ? mem.name : mem.name }}</p>
+            <small>{{ mem.title }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rt">
+      <app-suggestion-widget [profile]="profile"></app-suggestion-widget>
+    </div>
+  </div>
+
+</ion-content>

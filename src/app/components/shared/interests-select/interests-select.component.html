@@ -1,0 +1,16 @@
+
+<div class="heady">
+  <ion-icon name="close" (click)="close()"></ion-icon>
+  <h4>Choose Interests</h4>
+</div>
+<ion-content class="padded">
+  <div class="mod-wrap">
+    <p>Choose topics you are interested in. We will serve you with content relevant to your interests</p>
+
+    <div class="i-wrap">
+      <ion-button *ngFor="let item of interests" (click)="choose(item)" [ngClass]="{'sel': selected.includes(item)}">{{ item }}</ion-button>
+    </div>
+
+    <ion-button class="save" (click)="save()">Save</ion-button>
+  </div>
+</ion-content>

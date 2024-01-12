@@ -1,0 +1,17 @@
+<div class="wrap">
+  <ion-button class="nopads" fill="clear" [ngClass]="{'act': active === 'timeline'}" [routerLink]="['/timeline']">
+    <ion-icon name="grid"></ion-icon>
+  </ion-button>
+  <ion-button class="nopads" fill="clear" [ngClass]="{'act': active === 'messages'}" [routerLink]="['/messages']">
+    <ion-icon name="chatbox"></ion-icon>
+  </ion-button>
+  <ion-button class="nopads" fill="clear" [ngClass]="{'act': active === 'search'}" [routerLink]="['/search']">
+    <ion-icon name="filter"></ion-icon>
+  </ion-button>
+  <ion-button class="nopads" fill="clear" [ngClass]="{'act': active === 'events'}" [routerLink]="['/events-hub']">
+    <ion-icon name="calendar"></ion-icon>
+  </ion-button>
+  <ion-button class="nopads" fill="clear" [ngClass]="{'act': active === 'notice'}" [routerLink]="['/notice-board']">
+    <ion-icon name="megaphone"></ion-icon>
+  </ion-button>
+</div>

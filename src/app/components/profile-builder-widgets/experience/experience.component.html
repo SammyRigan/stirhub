@@ -1,0 +1,61 @@
+
+<div class="heady">
+  <ion-icon name="close" (click)="close()"></ion-icon>
+  <h4>experience</h4>
+</div>
+<ion-content class="padded">
+  <div class="mod-wrap">
+    <div class="wrap">
+      <div class="in-wrap">
+        <p>title   <i>👋 Reqiured</i></p>
+        <ion-input type="text" name="school" [(ngModel)]="workInfo.title"></ion-input>
+      </div>
+      <div class="in-wrap">
+        <p>company</p>
+        <ion-input type="text" name="degree" [(ngModel)]="workInfo.company"></ion-input>
+      </div>
+      <div class="in-wrap">
+        <div class="spanner">
+          <ion-icon name="square-outline" [hidden]="workInfo.current" (click)="workInfo.current = true"></ion-icon>
+          <ion-icon name="checkbox" [hidden]="!workInfo.current" (click)="workInfo.current = false"></ion-icon>
+          <p>I am currently working here</p>
+        </div>
+      </div>
+      <div class="in-wrap" id="open-date-input">
+        <p>start date</p>
+        <ion-input type="text" name="start" [value]="workInfo.startDate | date:'MMM YYYY'" readonly></ion-input>
+        <ion-popover trigger="open-date-input" show-backdrop="false">
+          <ng-template>
+            <ion-datetime
+              #popoverDatetime
+              presentation="month-year"
+              (ionChange)="workInfo.startDate = popoverDatetime.value"
+              done-text="done"
+              [showDefaultButtons]="true"
+            ></ion-datetime>
+          </ng-template>
+        </ion-popover>
+      </div>
+      <div class="in-wrap" id="open-date-input-2">
+        <p>end date</p>
+        <ion-input type="text" name="end" [value]="workInfo.endDate | date:'MMM YYYY'" readonly></ion-input>
+        <ion-popover trigger="open-date-input-2" show-backdrop="false">
+          <ng-template>
+            <ion-datetime
+              #popoverDatetime2
+              presentation="month-year"
+              (ionChange)="workInfo.endDate = popoverDatetime2.value"
+              [showDefaultButtons]="true"
+            ></ion-datetime>
+          </ng-template>
+        </ion-popover>
+      </div>
+    </div>
+
+    <div class="foot">
+      <ion-button fill="clear" (click)="deleteExperience()" *ngIf="exIndex >= 0">delete experience</ion-button>
+      <ion-button class="sv" (click)="updateProfile(false)">save</ion-button>
+    </div>
+  </div>
+
+</ion-content>

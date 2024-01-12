@@ -1,0 +1,162 @@
+<ion-content class="core">
+  <app-header [profile]="profile" [active]="'timeline'"></app-header>
+
+  <div class="noner" [hidden]="!isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div class="main" *ngIf="!isLoading">
+    <div class="lt">
+      <div class="pro pal">
+        <div class="p-wrap">
+          <ion-avatar><ion-img [hidden]="!community?.featuredImgUrl" [src]="community?.featuredImgUrl"></ion-img></ion-avatar>
+          <div class="p-desc">
+            <h4>{{ community?.name }}</h4>
+            <small>Community</small>
+          </div>
+        </div>
+        <div class="ff">
+          <div class="ff-i">
+            <p>3</p>
+            <small>members</small>
+          </div>
+          <!-- <div class="ff-i">
+            <p>{{ profile?.following.length }}</p>
+            <small>following</small>
+          </div> -->
+        </div>
+        <div class="links" hidden>
+          <div class="b-high"></div>
+          <span class="but">
+            <ion-icon name="bag-handle"></ion-icon>
+            <small>Exchange</small>
+            <!-- <ion-icon name="arrow-forward-outline"></ion-icon> -->
+          </span>
+          <span class="but" [routerLink]="['/archives']">
+            <ion-icon name="documents"></ion-icon>
+            <small>research work</small>
+            <!-- <ion-icon name="arrow-forward-outline"></ion-icon> -->
+          </span>
+          <span class="but" [routerLink]="['/events-hub']">
+            <ion-icon name="calendar"></ion-icon>
+            <small>Events Hub</small>
+            <!-- <ion-icon name="arrow-forward-outline"></ion-icon> -->
+          </span>
+          <span class="but" [routerLink]="['/notice-board']">
+            <ion-icon name="megaphone"></ion-icon>
+            <small>Notice Board</small>
+            <!-- <ion-icon name="arrow-forward-outline"></ion-icon> -->
+          </span>
+          <span class="but" [routerLink]="['/users/individual']">
+            <ion-icon name="people"></ion-icon>
+            <small>people</small>
+            <!-- <ion-icon name="arrow-forward-outline"></ion-icon> -->
+          </span>
+          <span class="but" [routerLink]="['/users/institution']">
+            <ion-icon name="school"></ion-icon>
+            <small>institutions</small>
+            <!-- <ion-icon name="arrow-forward-outline"></ion-icon> -->
+          </span>
+        </div>
+      </div>
+
+      <div class="interests" hidden>
+        <h4>Interests</h4>
+        <small *ngIf="!profile?.interests || profile?.interests.length === 0">You have not selected any interests yet</small>
+        <ion-button *ngFor="let int of profile?.interests">{{ int }}</ion-button>
+      </div>
+
+      <app-community-block hidden></app-community-block>
+    </div>
+
+    <div class="ml">
+      <div class="vate pal">
+        <div class="top">
+          <ion-avatar><ion-img [hidden]="!profile?.profileImgUrl" [src]="profile?.profileImgUrl"></ion-img></ion-avatar>
+          <div class="aft">
+            <div class="in-wrap">
+              <ion-input type="text" name="mind" [placeholder]="'Hello ' + (profile?.firstname ? (' ' + profile?.firstname) : '') + '?'" [(ngModel)]="newPost.text"></ion-input>
+            </div>
+            <div class="im-w" [ngClass]="{'mo': tempUri.length > 1}" *ngIf="tempUri.length === 1">
+              <div class="d-w" *ngFor="let img of tempUri">
+                <span (click)="removeImg(img)"><ion-icon name="close-outline"></ion-icon></span>
+                <ion-img [src]="img"></ion-img>
+              </div>
+            </div>
+            <div class="im-w mo" [ngClass]="{'ko': tempUri.length === 3}" [hidden]="tempUri.length === 0" *ngIf="tempUri.length > 1">
+              <div class="d-w" *ngFor="let img of tempUri" [ngStyle]="{'background-image': 'url(' + img + ')'}">
+                <span (click)="removeImg(img)"><ion-icon name="close-outline"></ion-icon></span>
+                <!-- <img [src]="img"> -->
+              </div>
+            </div>
+            <div class="im-w" [hidden]="!tempVidUrl">
+              <span (click)="tempVidUrl = null; postVid = null"><ion-icon name="close-outline"></ion-icon></span>
+              <video controls playsinline *ngIf="tempVidUrl" #postVideo>
+                <source [src]="tempVidUrl" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div class="bt-wo">
+              <div class="outs">
+                <input type="file" accept=".png, .jpg, .jpeg" #image (change)="readFile($event)" hidden>
+                <input type="file" accept=".mp4" #video (change)="readVid($event)" hidden>
+                <span (click)="(tempVidUrl || tempUri.length > 0) ? null : video.click()" [ngClass]="{'inact': (tempVidUrl || tempUri.length > 0)}">
+                  <ion-icon name="logo-youtube" style="color: #3f82d9;"></ion-icon>
+                  <small>video</small>
+                </span>
+                <span (click)="(tempUri.length === 4 || tempVidUrl) ? null : image.click();" [ngClass]="{'inact': (tempUri.length === 4 || tempVidUrl)}">
+                  <ion-icon name="image" style="color: #e34534;"></ion-icon>
+                  <small>photo</small>
+                </span>
+                <span (click)="addPoll()">
+                  <ion-icon name="list" style="color: #ceb423;"></ion-icon>
+                  <small>Polls</small>
+                </span>
+                <!-- <span>
+                  <ion-icon name="folder"></ion-icon>
+                  <small>publish</small>
+                </span> -->
+                <!-- <span>
+                  <ion-icon name="briefcase"></ion-icon>
+                  <small>job</small>
+                </span> -->
+              </div>
+              <ion-button (click)="addPost()" [disabled]="!newPost.text?.trim() && !tempVidUrl && tempUri.length === 0">post</ion-button>
+            </div>
+          </div>
+        </div>
+        <div class="p-ov" *ngIf="posting">
+          <ion-spinner name="crescent"></ion-spinner>
+        </div>
+      </div>
+      <app-post-card [timePost]="post" [profile]="profile" *ngFor="let post of timePosts" (deleted)="deletePost(post.id)"></app-post-card>
+    </div>
+
+    <div class="rt">
+      <app-event-block></app-event-block>
+      <app-suggestion-widget [profile]="profile"></app-suggestion-widget>
+
+      <ion-button class="ptw" hidden (click)="makePost()">make post</ion-button>
+<!--
+      <div class="footer" hidden>
+        <a [routerLink]="['/timeline']">Home</a>
+        <a href="https://stein.com.gh/about">About</a>
+        <a [routerLink]="['/messages']">Messages</a>
+        <a [routerLink]="['/archives']">Research</a>
+        <a [routerLink]="['/archives-publications']">Publications</a>
+        <a href="https://stein.com.gh/">Info Portal</a>
+        <div class="f-bur">
+          <ion-img src="assets/icon/logo.png"></ion-img>
+          <small>@Copyright {{year}} — Powered by <b><a href="https://heritorslabs.com" target="_blank">HL</a></b></small>
+        </div>
+      </div> -->
+    </div>
+  </div>
+
+</ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" hidden>
+  <ion-fab-button (click)="makePost()">
+    <ion-icon name="pencil-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

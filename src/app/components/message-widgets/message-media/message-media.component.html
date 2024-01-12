@@ -1,0 +1,9 @@
+<div class="wrap">
+  <ion-slides #slider [options]="slideOpts">
+    <ion-slide *ngFor="let item of imgUrls">
+      <img [src]="item">
+    </ion-slide>
+  </ion-slides>
+  <span class="arr" (click)="slider.slidePrev(); getActiveSlide()" [hidden]="activeIndex === 0"><ion-icon name="arrow-back"></ion-icon></span>
+  <span class="arr" (click)="slider.slideNext(); getActiveSlide()" [hidden]="activeIndex === imgUrls.length - 1"><ion-icon name="arrow-forward"></ion-icon></span>
+</div>

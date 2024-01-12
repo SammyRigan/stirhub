@@ -1,0 +1,18 @@
+<div class="iii">
+  <div class="sug pal">
+    <h4>Upcoming Events</h4>
+    <div class="event" *ngFor="let event of iEvents">
+      <span class="img">
+        <span class="i-w">
+          <h2>{{ event.startDate | date:'dd' }}</h2>
+          <small>{{ event.startDate | date:'MMM' }}</small>
+        </span>
+      </span>
+      <span class="txt">
+        <p>{{ event.title }}</p>
+        <small>{{ event.physicalDetails?.name ? event.physicalDetails?.name : event.virtualDetails?.platform ? event.virtualDetails?.platform : 'not specified' }}</small>
+      </span>
+    </div>
+    <ion-button [routerLink]="['/events-hub']">veiw all</ion-button>
+  </div>
+

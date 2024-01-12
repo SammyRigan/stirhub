@@ -1,0 +1,46 @@
+<ion-content class="core">
+  <app-header [profile]="profile" [active]="'events-hub'"></app-header>
+  <div class="noner" [hidden]="!isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+  <div class="main" *ngIf="!isLoading">
+    <div class="lt">
+      <div class="ta-ep">
+        <div class="ev-i" *ngFor="let event of iEvents">
+          <span class="img">
+            <span class="i-w">
+              <h2>{{ event.startDate | date:'dd' }}</h2>
+              <small>{{ event.startDate | date:'MMM' }}</small>
+            </span>
+          </span>
+          <span class="txt">
+            <p>{{ event.title }}</p>
+            <small>{{ event.description }}</small>
+            <div class="ev-act">
+              <small *ngIf="event.physicalDetails.name"><ion-icon name="pin"></ion-icon><a [href]="event.physicalDetails.mapLink" target="_blank">{{ event.physicalDetails.name }}</a></small>
+              <small *ngIf="event.virtualDetails.platform"><ion-icon name="earth"></ion-icon><a [href]="event.virtualDetails.link" target="_blank">{{ event.virtualDetails.platform }}</a></small>
+              <small *ngIf="(event.startDate | date:'dd, MMM') === (event.endDate | date:'dd, MMM')"><ion-icon name="time"></ion-icon>{{ event.startDate | date:'h:mm a z' }} to {{ event.endDate | date:'h:mm a z' }}</small>
+              <small *ngIf="(event.startDate | date:'dd, MMM') !== (event.endDate | date:'dd, MMM')"><ion-icon name="time"></ion-icon>{{ event.startDate | date:'MMMM d, y' }} to {{ event.endDate | date:'MMMM d, y' }}</small>
+            </div>
+          </span>
+          <span class="icon">
+            <ion-icon name="bookmark-outline"></ion-icon>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="rt">
+      <app-suggestion-widget [profile]="profile"></app-suggestion-widget>
+
+      <!-- <ion-button class="ptw" (click)="makePost()">make post</ion-button> -->
+    </div>
+  </div>
+
+  <app-tabs [active]="'events'"></app-tabs>
+</ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="profile?.name">
+  <ion-fab-button (click)="addEvent()">
+    <ion-icon name="pencil-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
