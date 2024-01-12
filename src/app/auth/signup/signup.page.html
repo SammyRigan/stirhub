@@ -65,6 +65,10 @@
               <ion-icon name="person"></ion-icon>
             </div>
             <div class="in-wrap" [hidden]="!profile.iType || !profile.knownFor">
+              <small>Email</small>
+              <ion-input type="email" placeholder="email@example.com" name="email" [(ngModel)]="profile.email"></ion-input>
+            </div>
+            <div class="in-wrap" [hidden]="!profile.iType || !profile.knownFor">
               <small>Password</small>
               <ion-input [type]="passType" placeholder="******" name="password" [(ngModel)]="password"></ion-input>
               <ion-icon name="lock-closed" (click)="passType === 'password' ? passType = 'text' : passType = 'password'"></ion-icon>

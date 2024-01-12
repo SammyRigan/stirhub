@@ -56,6 +56,7 @@ export class SignupPage implements OnInit {
 
   inviter: UserProfile;
 
+  email = '';
   password = null;
   passType = 'password';
 
