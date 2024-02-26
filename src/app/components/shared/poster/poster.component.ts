@@ -50,7 +50,7 @@ export class PosterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // console.log(this.poster);
+    console.log(this.poster);
     // this.timePost.imgUrls.indexOf
   }
 

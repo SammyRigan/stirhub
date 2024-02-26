@@ -462,10 +462,11 @@ app-go-back {
 
 app-post-card {
   margin: 0;
-  display: grid;
+  display: block;
   grid-template-rows: 1fr auto;
   margin-bottom: 10px;
   break-inside: avoid;
+  width: 100%;
 }
 
 .rt {

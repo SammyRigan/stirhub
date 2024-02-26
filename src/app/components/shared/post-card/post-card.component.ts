@@ -34,6 +34,7 @@ export class PostCardComponent implements OnInit {
   poll: PostPoll;
   due: string;
   voted = null;
+  today = Date.now();
 
   constructor(
     private generalService: GeneralService,
@@ -75,6 +76,7 @@ export class PostCardComponent implements OnInit {
       id: pollRef.id,
       ...pollRef.data() as PostPoll
     };
+    // console.log(this.poll);
     this.due = new Date(this.poll.dueDate).getTime().toString();
     this.checkVoted();
   }
@@ -87,6 +89,7 @@ export class PostCardComponent implements OnInit {
     } else {
       this.displayName = this.item.firstname + ' ' + this.item.lastname;
     }
+    // console.log(this.item);
   }
 
   async getMainPoster() {

@@ -4,7 +4,7 @@
 </div>
 <div class="vate">
   <div class="msg-p" *ngIf="timePost">
-    <ion-avatar><ion-img [hidden]="!postOwner?.imgUrl" [src]="postOwner?.imgUrl ? postOwner.imgUrl : 'assets/img/man.png'"></ion-img></ion-avatar>
+    <ion-avatar><ion-img [hidden]="!postOwner?.profileImgUrl" [src]="postOwner?.profileImgUrl ? postOwner.profileImgUrl : 'assets/img/man.png'"></ion-img></ion-avatar>
     <div class="p-stuff">
       <h4>{{ postOwner.displayName }}</h4>
       <p>{{ timePost?.text }}</p>

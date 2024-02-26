@@ -4,6 +4,7 @@ $tetiary: #bbbbbb;
 $accent: #E5D326;
 
 .item {
+  width: 100%;
   padding: 5px;
   cursor: pointer;
 }
@@ -39,6 +40,7 @@ $accent: #E5D326;
   display: flex;
   align-items: center;
   text-transform: capitalize;
+  width: calc(100% - 40px);
 
   ion-avatar {
     width: 50px;
@@ -50,6 +52,10 @@ $accent: #E5D326;
   h4 {
     font-size: 15px;
     font-weight: 500;
+    max-width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 
     &.non {
       width: 150px;
@@ -68,6 +74,20 @@ $accent: #E5D326;
       text-transform: lowercase;
     }
   }
+}
+
+.txt {
+  max-width: calc(100% - 60px);
+}
+
+.p-more {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 3px 15px #00000015;
 }
 
 .ctn {
@@ -104,6 +124,10 @@ $accent: #E5D326;
     color: #000000;
     font-size: 13px;
   }
+}
+
+.done .opt {
+  cursor: not-allowed;
 }
 
 .opt {

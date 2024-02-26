@@ -59,6 +59,11 @@ export class SinglePostPage implements OnInit, OnDestroy {
   async getUserProfile() {
     this.profile = await this.dataService.getLoggedInProfile();
     if (this.profile) {
+      this.doc = {
+        id: this.profile._id,
+        type: this.profile.iType,
+        imgUrl: this.profile.profileImgUrl
+      };
       this.isLoading = false;
     }
     const $sub = this.dataService.getUserUpdateListener().subscribe((profile) => {
@@ -68,6 +73,11 @@ export class SinglePostPage implements OnInit, OnDestroy {
         this.profile = profile;
         this.getPostOwner();
       }
+      this.doc = {
+        id: this.profile._id,
+        type: this.profile.iType,
+        imgUrl: this.profile.profileImgUrl
+      };
       this.isLoading = false;
     });
     this.subs.push($sub);
@@ -75,13 +85,9 @@ export class SinglePostPage implements OnInit, OnDestroy {
 
   getPostOwner() {
     this.postOwner = this.profile;
-    if (!this.profile.name) {
-      this.doc = {
-        id: this.profile._id,
-        type: this.profile.iType,
-        imgUrl: this.profile.profileImgUrl
-      };
-    }
+    // if (!this.profile.name) {
+
+    // }
   }
 
   async getPost(postId: string) {

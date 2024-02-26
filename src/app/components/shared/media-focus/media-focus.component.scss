@@ -124,6 +124,7 @@ span.arr:last-of-type {
   display: flex;
   align-items: center;
   text-transform: capitalize;
+  width: calc(100% - 40px);
 
   ion-avatar {
     width: 50px;
@@ -135,6 +136,10 @@ span.arr:last-of-type {
   h4 {
     font-size: 15px;
     font-weight: 500;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 
     i {
       color: #00000060;
@@ -149,6 +154,20 @@ span.arr:last-of-type {
   small {
     color: #00000060;
   }
+}
+
+.txt {
+  width: calc(100% - 60px);
+}
+
+.p-more {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 3px 15px #00000015;
 }
 
 .ctn {

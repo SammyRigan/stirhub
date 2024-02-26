@@ -19,7 +19,7 @@
         <button ngbDropdownItem *ngIf="profile?._id !== mainPost?.profileId && !profile?.observing?.includes(mainPost?.profileId) && (this.profile?.name && !this.secItem?.name)" (click)="observe(true, secItem)">Observe</button>
         <button ngbDropdownItem *ngIf="profile?._id !== mainPost?.profileId && (this.profile?.name && !this.secItem?.name) && profile?.observing?.includes(mainPost?.profileId)" (click)="observe(false, secItem)">Disregard</button>
         <button ngbDropdownItem *ngIf="profile?._id !== mainPost?.profileId" [routerLink]="['/profile/' + (mainPost?.institution ? 'institution/' : 'user-profile/') + mainPost?.profileId]" routerLinkActive="router-link-active" >View Profile</button>
-        <button ngbDropdownItem *ngIf="profile?._id !== mainPost?.profileId" (click)="reportPost(mainPost)">Report Post</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== mainPost?.profileId" (click)="reportPost(mainPost)" style="color: #ff0000;">Report Post</button>
         <button ngbDropdownItem *ngIf="profile?._id === mainPost?.profileId" (click)="deletePost(mainPost)">Delete</button>
       </div>
     </div>
@@ -79,13 +79,13 @@
         <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId && !profile?.observing?.includes(timePost?.profileId) && (this.profile?.name && !this.item?.name)" (click)="observe(true, item)">Observe</button>
         <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId && (this.profile?.name && !this.item?.name) && profile?.observing?.includes(timePost?.profileId)" (click)="observe(false, item)">Disregard</button>
         <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId" [routerLink]="['/profile/' + (timePost?.institution ? 'institution/' : 'user-profile/') + timePost?.profileId]" routerLinkActive="router-link-active" >View Profile</button>
-        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId" (click)="reportPost(timePost)">Report Post</button>
+        <button ngbDropdownItem *ngIf="profile?._id !== timePost?.profileId" (click)="reportPost(timePost)" style="color: #ff0000;">Report Post</button>
         <button ngbDropdownItem *ngIf="profile?._id === timePost?.profileId" (click)="deletePost(timePost)">Delete</button>
       </div>
     </div>
     <ion-icon class="an-icon" name="megaphone" [hidden]="!timePost.announcement"></ion-icon>
   </div>
-  <div class="ctn">
+  <div class="ctn" [ngClass]="{'done': today >= +due}">
     <p>{{ timePost.text }}</p>
     <div class="im-w" [ngClass]="{'mo': timePost.imgUrls.length > 1}" *ngIf="timePost.imgUrls.length === 1">
       <div class="d-w" *ngFor="let img of timePost.imgUrls" (click)="$event.stopPropagation(); viewMedia(timePost.imgUrls.indexOf(img))">
@@ -114,7 +114,7 @@
       <div class="options" *ngIf="profile?._id !== timePost.profileId && !voted">
         <ion-button class="nopads" *ngFor="let opt of poll?.options" (click)="$event.stopPropagation(); vote(opt)">{{ opt.value }}</ion-button>
       </div>
-      <small class="ps">{{ poll?.responses.length }} votes &#183; {{ poll?.closed ? 'Final results' : 'ends ' + (due | dateFrom:due) }}</small>
+      <small class="ps">{{ poll?.responses.length }} votes &#183; {{ poll?.closed || today >= +due ? 'Final results' : 'ends ' + (due | dateFrom:due) }}</small>
     </div>
   </div>
   <div class="actions" [hidden]="timePost.announcement">
