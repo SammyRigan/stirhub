@@ -48,7 +48,7 @@ export class PeoplePage implements OnInit {
 
 
   async getItems() {
-    const ref = await this.generalService.getPeople('user-profiles', this.lastDoc, ['practitioner', 'student'], null);
+    const ref = await this.generalService.getPeople('user-profiles', this.lastDoc, ['practitioner', 'student'], 30);
     const items = ref.docs.map(e => ({
       id: e.id,
       ...e.data() as UserProfile
