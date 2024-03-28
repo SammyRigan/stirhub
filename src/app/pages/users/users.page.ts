@@ -50,7 +50,7 @@ export class UsersPage implements OnInit {
   async getItems(col: string) {
     // let filter;
     // if (col === 'individual')
-    const res = await this.dataService.returnItemsRaw('profiles', 20, (col === 'individual' ? this.pPage : this.iPage), [{key: 'iType', value: col}]);
+    const res = await this.dataService.returnItemsRaw('profiles', null, (col === 'individual' ? this.pPage : this.iPage), [{key: 'iType', value: col}]);
     if (col === 'individual') {
       this.people = this.people.concat(res.data);
       this.pPage += 1;
